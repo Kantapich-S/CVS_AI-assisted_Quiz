@@ -1,1 +1,375 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>USMLE-Style Multiple Choice Questions: Cardiac Anatomy</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+        .explanation {
+            display: none;
+            transition: all 0.5s ease-in-out;
+        }
+        .explanation.visible {
+            display: block;
+        }
+        .correct-answer {
+            background-color: #dcfce7; /* A light green from Tailwind's palette */
+            border-left-color: #22c55e; /* A darker green */
+        }
+    </style>
+</head>
+<body class="bg-gray-50 text-gray-800">
 
+    <div class="container mx-auto p-4 sm:p-6 lg:p-8">
+        
+        <header class="text-center mb-8">
+            <h1 class="text-3xl sm:text-4xl font-bold text-gray-900">Cardiac Anatomy Quiz</h1>
+            <p class="mt-2 text-lg text-gray-600">USMLE-Style Multiple Choice Questions</p>
+        </header>
+
+        <main id="quiz-container" class="space-y-6">
+            <!-- Questions will be dynamically inserted here by JavaScript -->
+        </main>
+
+        <footer class="mt-12 text-center text-sm text-gray-500">
+            <p><strong>Disclaimer:</strong> This file was created by Ktp, with assistance from AI tools (e.g., ChatGPT, Gemini, Claude, and Perplexity) for content generation and editing. Please double-check all information for accuracy and reliability.</p>
+        </footer>
+
+    </div>
+
+    <script>
+        // --- DATA ---
+        // An array of objects to hold all quiz data for easier management.
+        const quizData = [
+            {
+                question: "The pericardium consists of two main layers. Which of the following correctly describes the nerve supply to the fibrous pericardium?",
+                options: [
+                    { text: "A) Vagus nerve (cranial nerve X)", correct: false },
+                    { text: "B) Sympathetic trunk fibers from T1-T5", correct: false },
+                    { text: "C) Phrenic nerve (C3-C5)", correct: true },
+                    { text: "D) Intercostal nerves T2-T6", correct: false },
+                    { text: "E) Cardiac plexus branches", correct: false }
+                ],
+                explanation: "The fibrous pericardium is innervated by the phrenic nerve, which arises from cervical segments C3-C5. This innervation pattern explains why pericardial irritation can cause referred pain to the ipsilateral supraclavicular region (C3-C5 dermatomes). The vagus nerve primarily supplies parasympathetic innervation to the heart itself, not the fibrous pericardium. Sympathetic trunk fibers and intercostal nerves do not directly innervate the fibrous pericardium. The cardiac plexus contains autonomic fibers for the heart muscle and conduction system."
+            },
+            {
+                question: "Which cardiac chamber forms the majority of the anterior (sternocostal) surface of the heart?",
+                options: [
+                    { text: "A) Left ventricle", correct: false },
+                    { text: "B) Right atrium", correct: false },
+                    { text: "C) Left atrium", correct: false },
+                    { text: "D) Right ventricle", correct: true },
+                    { text: "E) Left auricle", correct: false }
+                ],
+                explanation: "The right ventricle forms the majority of the anterior (sternocostal) surface of the heart, which is the surface that lies against the sternum and costal cartilages. While portions of the right atrium and left ventricle also contribute to this surface, the right ventricle is the predominant structure. The left atrium forms the posterior surface of the heart. The left auricle only makes a small contribution to the left margin of the anterior surface."
+            },
+            {
+                question: "What is the correct mnemonic sequence for heart valve auscultation points from superior to inferior?",
+                options: [
+                    { text: "A) MAPT (Mitral, Aortic, Pulmonary, Tricuspid)", correct: false },
+                    { text: "B) TAMP (Tricuspid, Aortic, Mitral, Pulmonary)", correct: false },
+                    { text: "C) APT M (Aortic, Pulmonary, Tricuspid, Mitral)", correct: true },
+                    { text: "D) PAMT (Pulmonary, Aortic, Mitral, Tricuspid)", correct: false },
+                    { text: "E) ATPM (Aortic, Tricuspid, Pulmonary, Mitral)", correct: false }
+                ],
+                explanation: `The mnemonic "APT M" correctly represents the auscultation sequence. Aortic and Pulmonary valves are both auscultated at the 2nd intercostal space (Aortic at right sternal border, Pulmonary at left sternal border), while Tricuspid and Mitral are both at the 5th intercostal space (Tricuspid at left sternal border, Mitral at the cardiac apex/midclavicular line). This arrangement reflects the anatomical positioning of the valve sounds and their optimal listening posts.`
+            },
+            {
+                question: "The crista terminalis in the right atrium serves as an important anatomical landmark. What is its primary significance?",
+                options: [
+                    { text: "A) It marks the location of the atrioventricular node", correct: false },
+                    { text: "B) It separates regions of different embryological origin within the right atrium", correct: true },
+                    { text: "C) It contains the primary conduction pathway from SA to AV node", correct: false },
+                    { text: "D) It forms the attachment point for the tricuspid valve cusps", correct: false },
+                    { text: "E) It marks the boundary between the right atrium and right ventricle", correct: false }
+                ],
+                explanation: "The crista terminalis is a muscular ridge that separates two embryologically distinct regions of the right atrium. The area anterior to the crista terminalis has rough muscular walls (musculi pectinati) derived from the primitive atrium, while the area posterior to it has smooth walls (sinus of venae cavae) derived from the sinus venosus. The AV node is located in the AV septum, not at the crista terminalis. While the SA node is located at the superior end of the crista terminalis, the crista itself is not the primary conduction pathway. The tricuspid valve attaches to the fibrous ring, not the crista terminalis."
+            },
+            {
+                question: "Which structure serves as the sole electrical connection between the atrial and ventricular myocardium?",
+                options: [
+                    { text: "A) Septomarginal trabecula (moderator band)", correct: false },
+                    { text: "B) AV Bundle of His", correct: true },
+                    { text: "C) Crista terminalis", correct: false },
+                    { text: "D) Coronary sinus", correct: false },
+                    { text: "E) Membranous interventricular septum", correct: false }
+                ],
+                explanation: "The AV Bundle of His is the only electrical connection between atrial and ventricular myocardium because the cardiac skeleton (fibrous rings and trigones) electrically isolates the atria from the ventricles. The bundle traverses the right fibrous trigone and membranous interventricular septum to reach the ventricles. The septomarginal trabecula carries the right bundle branch but is not the primary connection. The crista terminalis is an atrial structure. The coronary sinus is venous drainage. The membranous septum provides the anatomical pathway but the bundle itself is the electrical connection."
+            },
+            {
+                question: "A patient presents with chest pain radiating to the left shoulder and arm. This pain pattern is best explained by which anatomical principle?",
+                options: [
+                    { text: "A) Direct innervation of the heart by intercostal nerves", correct: false },
+                    { text: "B) Shared blood supply between cardiac and arm muscles", correct: false },
+                    { text: "C) Convergence of visceral cardiac afferents with somatic afferents in the spinal cord", correct: true },
+                    { text: "D) Compression of the brachial plexus by cardiac enlargement", correct: false },
+                    { text: "E) Referred pain through the phrenic nerve pathway", correct: false }
+                ],
+                explanation: "Cardiac pain is referred to the left chest, shoulder, arm, neck, and jaw because visceral afferents from the heart (traveling with sympathetic fibers to T1-T5 spinal segments) converge with somatic afferents from these body regions in the posterior horn of the spinal cord. The brain cannot distinguish between the visceral and somatic sources, interpreting the pain as coming from the somatic regions. The heart is not directly innervated by intercostal nerves. Blood supply sharing doesn't explain pain patterns. Brachial plexus compression would cause different symptoms. Phrenic nerve pathways cause supraclavicular referred pain from pericardial irritation, not typical cardiac ischemic pain."
+            },
+            {
+                question: "During cardiac catheterization, a cardiologist needs to access the coronary arteries. From which specific anatomical structures do the coronary arteries originate?",
+                options: [
+                    { text: "A) Ascending aorta just above the aortic valve cusps", correct: false },
+                    { text: "B) Aortic sinuses associated with two of the three semilunar cusps", correct: true },
+                    { text: "C) Arch of the aorta near the brachiocephalic trunk", correct: false },
+                    { text: "D) Left ventricle outflow tract before the aortic valve", correct: false },
+                    { text: "E) Posterior wall of the left atrium near pulmonary vein openings", correct: false }
+                ],
+                explanation: `The coronary arteries originate from two of the three aortic sinuses (dilations in the aortic root above the semilunar valve cusps). The right coronary artery arises from the right aortic sinus, and the left coronary artery arises from the left aortic sinus. The posterior aortic sinus is called the "non-coronary" sinus because it lacks a coronary artery origin. They do not arise from the ascending aorta above the sinuses, the aortic arch, the left ventricle, or the left atrium. Understanding this anatomy is crucial for cardiac catheterization procedures.`
+            },
+            {
+                question: "A patient with a ventricular septal defect (VSD) has an opening between the ventricles. Based on embryological development, where is this defect most likely to occur?",
+                options: [
+                    { text: "A) At the junction between the muscular and membranous parts of the interventricular septum", correct: true },
+                    { text: "B) In the center of the muscular interventricular septum", correct: false },
+                    { text: "C) Near the apex where the septum is thinnest", correct: false },
+                    { text: "D) At the base of the septum near the tricuspid valve", correct: false },
+                    { text: "E) Where the septum meets the free wall of the right ventricle", correct: false }
+                ],
+                explanation: "VSDs most commonly occur at the junction between the muscular and membranous parts of the interventricular septum because this represents the fusion point of two embryologically distinct structures. The muscular part develops from the apex upward, while the membranous part develops from the interatrial septum and aortic root downward. Failure of proper fusion at this junction creates the defect. Pure muscular septal defects are less common. The apex has the thickest muscular septum. The septal-free wall junction is not a typical VSD location."
+            },
+            {
+                question: "During a CABG procedure, a surgeon harvests the great saphenous vein for grafting. What is the most significant long-term clinical concern with saphenous vein grafts compared to arterial grafts?",
+                options: [
+                    { text: "A) Higher immediate postoperative infection rates", correct: false },
+                    { text: "B) Greater tendency for vasospasm during surgery", correct: false },
+                    { text: "C) Development of graft atherosclerosis requiring future intervention", correct: true },
+                    { text: "D) Incompatibility with anticoagulation medications", correct: false },
+                    { text: "E) Higher risk of graft rupture due to thin walls", correct: false }
+                ],
+                explanation: `Saphenous vein grafts are prone to developing atherosclerotic disease over time, which can lead to graft stenosis or occlusion requiring future PCI or surgical intervention. This "saphenous vein graft disease" is a well-recognized long-term complication. Arterial grafts (like internal thoracic artery) have better long-term patency rates and are less prone to atherosclerosis. Infection rates are not significantly different between graft types. Saphenous veins are less prone to vasospasm than arteries. Anticoagulation compatibility is not graft-type dependent. Vein graft rupture is not a major clinical concern.`
+            },
+            {
+                question: "A patient undergoes echocardiography showing thickening of the mitral valve leaflets. Which papillary muscles are most directly involved in mitral valve function?",
+                options: [
+                    { text: "A) Anterior, posterior, and septal papillary muscles", correct: false },
+                    { text: "B) Anterolateral and posteromedial papillary muscles", correct: true },
+                    { text: "C) Only the anterior papillary muscle", correct: false },
+                    { text: "D) Septal and posterior papillary muscles only", correct: false },
+                    { text: "E) All trabecular muscles of the left ventricle", correct: false }
+                ],
+                explanation: "The mitral (bicuspid) valve is supported by two papillary muscles: the anterolateral and posteromedial papillary muscles of the left ventricle. These muscles give rise to chordae tendineae that attach to both cusps of the mitral valve, preventing valve prolapse during ventricular contraction. The anterior, posterior, and septal papillary muscles (three muscles) support the tricuspid valve in the right ventricle, not the mitral valve. The left ventricle has only two papillary muscles for its bicuspid valve, unlike the right ventricle which has three for its tricuspid valve."
+            },
+             {
+                question: "A cardiac surgeon plans to clamp the great vessels during surgery. Which pericardial structure provides the critical anatomical landmark for this procedure?",
+                options: [
+                    { text: "A) Oblique pericardial sinus", correct: false },
+                    { text: "B) Coronary sinus", correct: false },
+                    { text: "C) Transverse pericardial sinus", correct: true },
+                    { text: "D) Fibrous pericardium attachment", correct: false },
+                    { text: "E) Pericardial cavity proper", correct: false }
+                ],
+                explanation: "The transverse pericardial sinus is the critical surgical landmark for great vessel clamping during cardiac surgery. This sinus is formed by the reflection of serous pericardium around the aorta, superior vena cava, and pulmonary veins. It provides access for the surgeon to pass instruments behind the great vessels for clamping procedures. The oblique sinus is located behind the heart and corresponds to the left atrium area, not useful for great vessel access. The coronary sinus is a venous structure. The fibrous pericardium and pericardial cavity don't provide specific vessel access landmarks."
+            },
+            {
+                question: "A patient has a myocardial infarction affecting the posterior wall of the left ventricle and the AV node. Which coronary artery is most likely occluded?",
+                options: [
+                    { text: "A) Left anterior descending (LAD) artery", correct: false },
+                    { text: "B) Left circumflex artery", correct: false },
+                    { text: "C) Right coronary artery", correct: true },
+                    { text: "D) Left main coronary artery", correct: false },
+                    { text: "E) Posterior descending artery alone", correct: false }
+                ],
+                explanation: "The right coronary artery (RCA) typically gives rise to both the posterior interventricular branch (which supplies the posterior wall of the left ventricle) and the AV nodal branch (which supplies the AV node). This pattern of infarction affecting both the posterior LV wall and AV node suggests RCA occlusion. The LAD supplies the anterior wall and anterior septum. The circumflex typically supplies the lateral LV wall and left atrium. Left main occlusion would cause more extensive anterior and lateral infarction. The posterior descending artery is usually a branch of the RCA and wouldn't typically cause AV nodal ischemia by itself."
+            },
+            {
+                question: "A patient develops complete heart block after cardiac surgery. The conduction system damage most likely occurred at which specific anatomical location?",
+                options: [
+                    { text: "A) SA node at the superior end of crista terminalis", correct: false },
+                    { text: "B) AV node in the AV septum near the coronary sinus", correct: false },
+                    { text: "C) Right bundle branch in the septomarginal trabecula", correct: false },
+                    { text: "D) AV Bundle of His traversing the membranous interventricular septum", correct: true },
+                    { text: "E) Left bundle branch system in the left ventricular septum", correct: false }
+                ],
+                explanation: "Complete heart block indicates complete interruption of conduction from atria to ventricles, which occurs when the AV Bundle of His is damaged as it traverses the membranous interventricular septum and right fibrous trigone. This is the most vulnerable location for complete AV block because it's the sole connection between atrial and ventricular conduction systems. SA node damage causes sinus node dysfunction, not AV block. AV node damage typically causes various degrees of AV block but often retains some conduction. Bundle branch damage causes bundle branch blocks but not complete AV dissociation."
+            },
+            {
+                question: "During a transradial cardiac catheterization, the interventional cardiologist accesses the coronary circulation. What is the optimal anatomical landmark for radial artery puncture?",
+                options: [
+                    { text: "A) At the wrist crease directly over the radial styloid process", correct: false },
+                    { text: "B) 2 cm proximal to the radial styloid process where the artery is palpable", correct: true },
+                    { text: "C) At the anatomical snuffbox between the tendons", correct: false },
+                    { text: "D) 5 cm proximal to the wrist at the mid-forearm", correct: false },
+                    { text: "E) Just distal to the radial styloid at the thenar eminence", correct: false }
+                ],
+                explanation: "The optimal site for transradial arterial access is 2 cm proximal to the radial styloid process where the radial artery is easily palpable and has adequate size for catheter insertion. This location provides sufficient vessel caliber while avoiding the smaller, more tortuous segments near the wrist crease. Puncture directly over the styloid process risks injury to adjacent structures. The anatomical snuffbox location is too distal and the vessel is smaller. Mid-forearm access is unnecessarily proximal and technically more difficult. Access distal to the styloid encounters smaller vessel caliber."
+            },
+            {
+                question: "A patient presents with acute ST-elevation myocardial infarction affecting the anterior wall and interventricular septum. Which coronary vessel territory corresponds to this infarction pattern?",
+                options: [
+                    { text: "A) Right coronary artery and posterior descending artery", correct: false },
+                    { text: "B) Left circumflex artery and obtuse marginal branches", correct: false },
+                    { text: "C) Left anterior descending artery and septal perforators", correct: true },
+                    { text: "D) Right coronary artery and acute marginal branch", correct: false },
+                    { text: "E) Left main coronary artery bifurcation", correct: false }
+                ],
+                explanation: "The left anterior descending (LAD) artery and its septal perforating branches supply the anterior wall of the left ventricle and the anterior two-thirds of the interventricular septum. An ST-elevation MI in this territory indicates LAD occlusion. The RCA and PDA supply the inferior/posterior walls. The circumflex supplies the lateral wall. The RCA marginal branch supplies the right ventricle. Left main occlusion would typically cause more extensive infarction involving both LAD and circumflex territories. Understanding coronary territories is crucial for interpreting ECG changes and planning interventions."
+            },
+            {
+                question: "A patient has pericarditis with associated supraclavicular pain and diaphragmatic weakness on the right side. Which anatomical relationship best explains this clinical presentation?",
+                options: [
+                    { text: "A) Vagus nerve involvement causing referred cardiac pain", correct: false },
+                    { text: "B) Phrenic nerve irritation due to its course along the fibrous pericardium", correct: true },
+                    { text: "C) Intercostal nerve inflammation from pericardial extension", correct: false },
+                    { text: "D) Sympathetic chain involvement causing mixed autonomic symptoms", correct: false },
+                    { text: "E) Recurrent laryngeal nerve compression by pericardial swelling", correct: false }
+                ],
+                explanation: "The phrenic nerve (C3-C5) supplies the fibrous pericardium and also innervates the diaphragm. Pericardial inflammation can irritate the phrenic nerve, causing referred pain to the ipsilateral supraclavicular region (C3-C5 dermatomes) and diaphragmatic weakness due to motor nerve involvement. This explains both the pain pattern and the diaphragmatic dysfunction. The vagus nerve doesn't supply the pericardium or cause supraclavicular pain. Intercostal nerves don't typically cause supraclavicular symptoms. Sympathetic involvement wouldn't cause this specific pattern. Recurrent laryngeal nerve compression would cause voice changes, not diaphragmatic weakness."
+            },
+            {
+                question: "A patient with severe aortic stenosis undergoes valve replacement. During surgery, which cardiac structure must be carefully preserved to maintain normal ventricular conduction?",
+                options: [
+                    { text: "A) Coronary sinus and its tributaries", correct: false },
+                    { text: "B) Left bundle branch as it courses through the muscular septum", correct: false },
+                    { text: "C) AV Bundle of His near the membranous septum and aortic root", correct: true },
+                    { text: "D) SA node at the junction of the SVC and right atrium", correct: false },
+                    { text: "E) Right bundle branch in the septomarginal trabecula", correct: false }
+                ],
+                explanation: "During aortic valve replacement, the AV Bundle of His is at risk because it courses near the membranous interventricular septum and aortic root, close to where sutures are placed for valve implantation. The bundle travels from the AV node through the right fibrous trigone and membranous septum before branching. Damage here can cause complete heart block. The coronary sinus is remote from the aortic valve. Bundle branches are more distal and less likely to be injured during aortic valve surgery. The SA node is anatomically distant from the aortic valve area."
+            },
+            {
+                question: "A patient presents with chest pain and an ECG showing ST-elevations in leads II, III, and aVF, along with new-onset complete heart block. Which single coronary artery occlusion best explains both findings?",
+                options: [
+                    { text: "A) Proximal left anterior descending artery with septal branches", correct: false },
+                    { text: "B) Left circumflex artery with large obtuse marginal branches", correct: false },
+                    { text: "C) Right coronary artery proximal to both AV nodal and posterior descending branches", correct: true },
+                    { text: "D) Distal right coronary artery affecting only the posterior descending branch", correct: false },
+                    { text: "E) Left main coronary artery causing extensive anterior infarction", correct: false }
+                ],
+                explanation: "Leads II, III, and aVF represent the inferior wall of the heart, which is typically supplied by the right coronary artery (RCA). Complete heart block with inferior MI suggests AV nodal involvement, as the AV nodal artery usually arises from the RCA. A proximal RCA occlusion would affect both the posterior descending branch (causing inferior wall MI) and the AV nodal branch (causing complete heart block). LAD occlusion causes anterior changes. Circumflex causes lateral changes. Distal RCA occlusion might spare the AV nodal branch. Left main would cause anterior and lateral changes, not isolated inferior changes."
+            },
+            {
+                question: "A cardiac surgeon performing mitral valve repair notices that the valve cusps appear structurally normal but fail to coapt properly during ventricular contraction. Which anatomical structure is most likely dysfunctional?",
+                options: [
+                    { text: "A) Fibrous ring of the mitral valve (annulus)", correct: false },
+                    { text: "B) Papillary muscles and chordae tendineae complex", correct: true },
+                    { text: "C) Left ventricular outflow tract muscle bundles", correct: false },
+                    { text: "D) Trabeculae carneae of the left ventricle", correct: false },
+                    { text: "E) Interventricular septum and its muscular components", correct: false }
+                ],
+                explanation: "If the mitral valve cusps appear structurally normal but fail to coapt (come together) properly, the problem likely lies with the subvalvular apparatus - specifically the papillary muscles and chordae tendineae. These structures are responsible for preventing the valve cusps from prolapsing into the left atrium during ventricular contraction and ensuring proper valve closure. Papillary muscle dysfunction (from ischemia, rupture, or displacement) or chordal rupture would prevent normal valve function despite normal leaflet structure. The annulus provides support but wouldn't prevent coaptation if intact. Outflow tract and trabecular muscles don't directly affect mitral valve function."
+            },
+            {
+                question: "A patient with rheumatic heart disease has severe mitral stenosis and develops atrial fibrillation with a new embolic stroke. Based on cardiac anatomy and blood flow patterns, which cardiac chamber abnormality most directly contributed to the embolic risk?",
+                options: [
+                    { text: "A) Right ventricular hypertrophy from pulmonary hypertension", correct: false },
+                    { text: "B) Left atrial enlargement with blood stasis and thrombus formation", correct: true },
+                    { text: "C) Left ventricular dilation from volume overload", correct: false },
+                    { text: "D) Right atrial enlargement from tricuspid regurgitation", correct: false },
+                    { text: "E) Interventricular septal hypertrophy from pressure gradients", correct: false }
+                ],
+                explanation: "Mitral stenosis causes left atrial enlargement due to impaired emptying and increased pressure. The enlarged, poorly contracting left atrium (especially with atrial fibrillation) creates blood stasis, particularly in the left atrial appendage, leading to thrombus formation. These thrombi can embolize through the mitral valve into the left ventricle and then to the systemic circulation, causing stroke. While RV hypertrophy may occur from secondary pulmonary hypertension, it doesn't directly cause systemic emboli. LV changes occur later and don't directly cause embolic stroke. RA enlargement wouldn't cause systemic emboli. Septal hypertrophy doesn't directly contribute to embolic risk in this scenario."
+            }
+        ];
+
+        // --- SCRIPT LOGIC ---
+        document.addEventListener('DOMContentLoaded', () => {
+            const quizContainer = document.getElementById('quiz-container');
+
+            // --- Function to create and inject the quiz HTML ---
+            function generateQuiz() {
+                quizData.forEach((item, index) => {
+                    // Create the main card for the question
+                    const questionCard = document.createElement('section');
+                    questionCard.className = 'bg-white p-6 rounded-lg shadow-md border border-gray-200';
+                    questionCard.setAttribute('aria-labelledby', `question-title-${index}`);
+                    
+                    // Create the question title
+                    const questionTitle = document.createElement('h2');
+                    questionTitle.id = `question-title-${index}`;
+                    questionTitle.className = 'text-lg font-semibold text-gray-800 mb-4';
+                    questionTitle.textContent = `Question ${index + 1}: ${item.question}`;
+                    
+                    // Create the list for options
+                    const optionsList = document.createElement('ul');
+                    optionsList.className = 'space-y-3';
+                    optionsList.setAttribute('role', 'list');
+                    
+                    // Populate the options
+                    item.options.forEach((option, optionIndex) => {
+                        const optionItem = document.createElement('li');
+                        optionItem.className = 'p-3 rounded-md border border-gray-300 transition-all duration-200';
+                        if (option.correct) {
+                            // Add a data attribute to identify the correct answer later
+                            optionItem.dataset.correct = "true";
+                        }
+                        optionItem.textContent = option.text;
+                        optionsList.appendChild(optionItem);
+                    });
+
+                    // Create the "Show Explanation" button
+                    const showExplanationBtn = document.createElement('button');
+                    showExplanationBtn.className = 'mt-5 px-4 py-2 bg-blue-600 text-white font-semibold rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-all duration-200';
+                    showExplanationBtn.textContent = 'Show Explanation';
+                    // Link button to the question index
+                    showExplanationBtn.dataset.questionIndex = index;
+
+                    // Create the explanation container
+                    const explanationDiv = document.createElement('div');
+                    explanationDiv.id = `explanation-${index}`;
+                    explanationDiv.className = 'explanation mt-4 p-4 bg-gray-100 rounded-md border-l-4 border-gray-400';
+                    explanationDiv.innerHTML = `<p class="font-semibold text-gray-700">Explanation:</p><p class="mt-1 text-gray-600">${item.explanation}</p>`;
+                    
+                    // Append all parts to the card, and the card to the container
+                    questionCard.appendChild(questionTitle);
+                    questionCard.appendChild(optionsList);
+                    questionCard.appendChild(showExplanationBtn);
+                    questionCard.appendChild(explanationDiv);
+                    quizContainer.appendChild(questionCard);
+                });
+            }
+
+            // --- Function to handle the button click ---
+            function handleButtonClick(event) {
+                // Use event delegation to catch clicks on any explanation button
+                if (event.target.matches('[data-question-index]')) {
+                    const button = event.target;
+                    const index = button.dataset.questionIndex;
+                    const explanationDiv = document.getElementById(`explanation-${index}`);
+                    
+                    // Toggle visibility of the explanation
+                    explanationDiv.classList.toggle('visible');
+
+                    if (explanationDiv.classList.contains('visible')) {
+                        // Change button text and style
+                        button.textContent = 'Hide Explanation';
+                        button.classList.remove('bg-blue-600', 'hover:bg-blue-700');
+                        button.classList.add('bg-gray-600', 'hover:bg-gray-700');
+
+                        // Find the parent card and then the correct answer within it
+                        const questionCard = button.closest('section');
+                        const correctAnswer = questionCard.querySelector('li[data-correct="true"]');
+                        if (correctAnswer) {
+                            correctAnswer.classList.add('correct-answer', 'border-l-4');
+                        }
+                    } else {
+                        // Revert button text and style
+                        button.textContent = 'Show Explanation';
+                        button.classList.add('bg-blue-600', 'hover:bg-blue-700');
+                        button.classList.remove('bg-gray-600', 'hover:bg-gray-700');
+
+                        // Remove highlighting
+                        const questionCard = button.closest('section');
+                        const correctAnswer = questionCard.querySelector('li[data-correct="true"]');
+                        if (correctAnswer) {
+                            correctAnswer.classList.remove('correct-answer', 'border-l-4');
+                        }
+                    }
+                }
+            }
+            
+            // --- Initialization ---
+            generateQuiz();
+            quizContainer.addEventListener('click', handleButtonClick);
+        });
+    </script>
+</body>
+</html>
