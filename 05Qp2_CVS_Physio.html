@@ -1,0 +1,462 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cardiovascular Hemodynamics - USMLE-Style Quiz</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        /* Custom styles for better look and feel */
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+        .quiz-container {
+            max-width: 800px;
+            margin: 2rem auto;
+            padding: 2rem;
+            background-color: #f9fafb;
+            border-radius: 1rem;
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+        }
+        .question-block {
+            margin-bottom: 2rem;
+            padding: 1.5rem;
+            border: 1px solid #e5e7eb;
+            border-radius: 0.75rem;
+            background-color: #ffffff;
+            transition: box-shadow 0.3s ease;
+        }
+        .question-block:hover {
+            box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+        }
+        .explanation {
+            margin-top: 1rem;
+            padding: 1rem;
+            border-radius: 0.5rem;
+            background-color: #eef2ff;
+            border-left: 4px solid #6366f1;
+            display: none; /* Initially hidden */
+        }
+        /* Styling for correct/incorrect labels */
+        .correct-answer {
+            background-color: #dcfce7;
+            border: 1px solid #22c55e;
+            padding: 0.5rem;
+            border-radius: 0.375rem;
+        }
+        .incorrect-answer {
+            background-color: #fee2e2;
+            border: 1px solid #ef4444;
+            padding: 0.5rem;
+            border-radius: 0.375rem;
+        }
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+    </style>
+</head>
+<body class="bg-gray-100">
+
+    <div class="quiz-container">
+        <div class="text-center mb-8">
+            <h1 class="text-3xl font-bold text-gray-800">Cardiovascular Hemodynamics Quiz</h1>
+            <p class="text-gray-600 mt-2">USMLE-Style Multiple Choice Questions</p>
+        </div>
+
+        <!-- Quiz questions will be dynamically inserted here -->
+        <div id="quiz-body"></div>
+
+        <div class="mt-8 text-center">
+            <button id="submit-quiz" class="bg-indigo-600 text-white font-bold py-3 px-8 rounded-lg hover:bg-indigo-700 focus:outline-none focus:ring-4 focus:ring-indigo-300 transition-all duration-300 shadow-lg">
+                Submit & See Score
+            </button>
+        </div>
+
+        <div id="results-container" class="mt-8 text-center p-6 bg-white rounded-lg shadow-md" style="display: none;">
+            <h2 class="text-2xl font-bold text-gray-800">Quiz Results</h2>
+            <p id="score-text" class="text-lg mt-2 text-gray-700"></p>
+            <p id="feedback-text" class="text-md mt-1 text-gray-500"></p>
+        </div>
+        
+        <div class="mt-12 pt-4 border-t border-gray-200">
+            <p class="text-xs text-gray-500 text-center">
+                <strong>Disclaimer:</strong> This file was created by Ktp, with assistance from AI tools (e.g., ChatGPT, Gemini, Claude, and Perplexity) for content generation and editing. Please double-check all information for accuracy and reliability.
+            </p>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            // --- DATA STORE ---
+            const quizData = [
+                {
+                    question: "Which type of blood vessel contains the highest percentage of total blood volume in the human body?",
+                    options: [
+                        { text: "Arteries", isCorrect: false },
+                        { text: "Arterioles", isCorrect: false },
+                        { text: "Capillaries", isCorrect: false },
+                        { text: "Venules and veins", isCorrect: true },
+                        { text: "Pulmonary vessels", isCorrect: false }
+                    ],
+                    explanation: "The venous system serves as the body's primary blood reservoir, containing more than 60% of the total blood volume. This large capacity is due to their thin walls and large radius, allowing them to accommodate significant blood volumes at low pressures."
+                },
+                {
+                    question: "What is the primary structural difference between arteries and veins?",
+                    options: [
+                        { text: "Veins have thicker walls than arteries", isCorrect: false },
+                        { text: "Arteries contain valves while veins do not", isCorrect: false },
+                        { text: "Veins have valves while arteries do not", isCorrect: true },
+                        { text: "Arteries have larger lumens than veins", isCorrect: false },
+                        { text: "Veins contain more smooth muscle than arteries", isCorrect: false }
+                    ],
+                    explanation: "Veins contain one-way valves every 2-4 cm to ensure unidirectional blood flow back to the heart, especially important in overcoming gravity in the lower extremities. Arteries do not require valves because they carry blood under high pressure away from the heart."
+                },
+                {
+                    question: "Which component has the greatest influence on vascular resistance according to the resistance equation?",
+                    options: [
+                        { text: "Blood viscosity", isCorrect: false },
+                        { text: "Vessel length", isCorrect: false },
+                        { text: "Vessel radius", isCorrect: true },
+                        { text: "Blood temperature", isCorrect: false },
+                        { text: "Hematocrit level", isCorrect: false }
+                    ],
+                    explanation: "According to the resistance equation R = ηL/r⁴, vessel radius has a fourth-power relationship with resistance, making it the most powerful determinant. A small change in radius produces a dramatic change in resistance."
+                },
+                {
+                    question: "Mean arterial pressure (MAP) is calculated using which formula?",
+                    options: [
+                        { text: "MAP = (Systolic + Diastolic) / 2", isCorrect: false },
+                        { text: "MAP = Systolic - Diastolic", isCorrect: false },
+                        { text: "MAP = Diastolic + 1/3(Systolic - Diastolic)", isCorrect: true },
+                        { text: "MAP = 2/3(Systolic) + 1/3(Diastolic)", isCorrect: false },
+                        { text: "MAP = Systolic + 1/3(Diastolic)", isCorrect: false }
+                    ],
+                    explanation: "MAP is calculated as diastolic pressure plus one-third of the pulse pressure (systolic - diastolic). This accounts for the fact that the heart spends more time in diastole than systole, so diastolic pressure contributes more to the average."
+                },
+                {
+                    question: "Which mechanism is primarily responsible for local metabolic control of blood flow?",
+                    options: [
+                        { text: "Sympathetic nervous system activation", isCorrect: false },
+                        { text: "Parasympathetic nervous system activation", isCorrect: false },
+                        { text: "Vasodilation in response to decreased O₂ and increased CO₂", isCorrect: true },
+                        { text: "Hormonal regulation by epinephrine", isCorrect: false },
+                        { text: "Baroreceptor reflex activation", isCorrect: false }
+                    ],
+                    explanation: "Local metabolic control responds to tissue metabolic needs through vasodilation triggered by decreased oxygen, increased carbon dioxide, increased acid (H⁺), increased K⁺, and increased adenosine. This allows tissues to match blood flow to their metabolic demands."
+                },
+                {
+                    question: "What is the primary mechanism by which nitric oxide (NO) causes vasodilation?",
+                    options: [
+                        { text: "Direct binding to calcium channels", isCorrect: false },
+                        { text: "Activation of adenylyl cyclase and increased cAMP", isCorrect: false },
+                        { text: "Activation of guanylyl cyclase and increased cGMP", isCorrect: true },
+                        { text: "Inhibition of sodium-potassium pumps", isCorrect: false },
+                        { text: "Direct smooth muscle membrane hyperpolarization", isCorrect: false }
+                    ],
+                    explanation: "Nitric oxide activates guanylyl cyclase, which increases cyclic GMP (cGMP) levels. The increased cGMP leads to decreased myosin phosphorylation and smooth muscle relaxation, causing vasodilation."
+                },
+                {
+                    question: "According to Starling forces, what is the net fluid movement at the arterial end of a capillary?",
+                    options: [
+                        { text: "9 mmHg into the capillary", isCorrect: false },
+                        { text: "11 mmHg out of the capillary", isCorrect: true },
+                        { text: "25 mmHg into the capillary", isCorrect: false },
+                        { text: "37 mmHg out of the capillary", isCorrect: false },
+                        { text: "No net movement", isCorrect: false }
+                    ],
+                    explanation: "At the arterial end: Pc (37 mmHg out) - πc (25 mmHg in) - Pi (1 mmHg in) = +11 mmHg net outward. The capillary hydrostatic pressure exceeds the inward forces of plasma colloid osmotic pressure and interstitial hydrostatic pressure, resulting in net filtration."
+                },
+                {
+                    question: "Which of the following best describes the Frank-Starling mechanism's role in venous return?",
+                    options: [
+                        { text: "Increased heart rate directly increases venous return", isCorrect: false },
+                        { text: "Increased contractility decreases venous return", isCorrect: false },
+                        { text: "Increased venous return leads to increased stroke volume", isCorrect: true },
+                        { text: "Decreased preload increases cardiac output", isCorrect: false },
+                        { text: "Sympathetic stimulation decreases venous return", isCorrect: false }
+                    ],
+                    explanation: "The Frank-Starling mechanism states that increased venous return (preload) stretches the ventricle, leading to increased stroke volume through enhanced contractility. This mechanism helps match cardiac output to venous return automatically."
+                },
+                {
+                    question: "A patient with heart failure has elevated central venous pressure. Which Starling force change would most likely contribute to peripheral edema in this condition?",
+                    options: [
+                        { text: "Decreased plasma colloid osmotic pressure", isCorrect: false },
+                        { text: "Increased interstitial hydrostatic pressure", isCorrect: false },
+                        { text: "Increased capillary hydrostatic pressure", isCorrect: true },
+                        { text: "Increased interstitial osmotic pressure", isCorrect: false },
+                        { text: "Decreased interstitial osmotic pressure", isCorrect: false }
+                    ],
+                    explanation: "Heart failure leads to increased central venous pressure, which backs up into the capillary system, increasing capillary hydrostatic pressure. This shifts the Starling force balance toward increased filtration and reduced reabsorption, leading to edema."
+                },
+                {
+                    question: "During exercise, skeletal muscle blood flow increases primarily due to:",
+                    options: [
+                        { text: "Sympathetic nervous system vasodilation", isCorrect: false },
+                        { text: "Parasympathetic nervous system activation", isCorrect: false },
+                        { text: "Local metabolic vasodilation overriding sympathetic vasoconstriction", isCorrect: true },
+                        { text: "Decreased cardiac output requiring redistribution", isCorrect: false },
+                        { text: "Hormonal vasodilation from the adrenal cortex", isCorrect: false }
+                    ],
+                    explanation: "During exercise, active skeletal muscles produce metabolic vasodilators (decreased O₂, increased CO₂, K⁺, adenosine, etc.) that locally override the sympathetic vasoconstriction, allowing for massively increased blood flow."
+                },
+                {
+                    question: "A patient presents with hypertension. Their blood pressure is 180/100 mmHg. What is their mean arterial pressure?",
+                    options: [
+                        { text: "120 mmHg", isCorrect: false },
+                        { text: "127 mmHg", isCorrect: true },
+                        { text: "140 mmHg", isCorrect: false },
+                        { text: "150 mmHg", isCorrect: false },
+                        { text: "160 mmHg", isCorrect: false }
+                    ],
+                    explanation: "MAP = Diastolic + 1/3(Systolic - Diastolic) = 100 + 1/3(180 - 100) = 100 + 1/3(80) = 100 + 26.7 ≈ 127 mmHg. This calculation properly weights the diastolic pressure."
+                },
+                {
+                    question: "Which mechanism would be LEAST effective in increasing venous return to the heart?",
+                    options: [
+                        { text: "Skeletal muscle contraction during walking", isCorrect: false },
+                        { text: "Deep inspiration", isCorrect: false },
+                        { text: "Sympathetic venoconstriction", isCorrect: false },
+                        { text: "Arteriolar vasodilation", isCorrect: true },
+                        { text: "Increased blood volume", isCorrect: false }
+                    ],
+                    explanation: "Arteriolar vasodilation would decrease the pressure gradient driving flow from the arteries to the veins, thus reducing the overall driving pressure for venous return, even though it increases local flow."
+                },
+                {
+                    question: "In the equation MAP = CO × TPR, if cardiac output decreases by 20% but mean arterial pressure remains constant, total peripheral resistance must:",
+                    options: [
+                        { text: "Decrease by 20%", isCorrect: false },
+                        { text: "Increase by 20%", isCorrect: false },
+                        { text: "Increase by 25%", isCorrect: true },
+                        { text: "Decrease by 25%", isCorrect: false },
+                        { text: "Remain unchanged", isCorrect: false }
+                    ],
+                    explanation: "If CO decreases to 80% of original value (0.8 × CO) and MAP remains constant, then: MAP = 0.8 × CO × TPR'. For MAP to remain constant: CO × TPR = 0.8 × CO × TPR', therefore TPR' = TPR/0.8 = 1.25 × TPR. This represents a 25% increase in TPR."
+                },
+                {
+                    question: "A patient with severe dehydration would most likely exhibit which combination of cardiovascular changes?",
+                    options: [
+                        { text: "Increased stroke volume and decreased heart rate", isCorrect: false },
+                        { text: "Decreased stroke volume and increased heart rate", isCorrect: true },
+                        { text: "Increased cardiac output and decreased TPR", isCorrect: false },
+                        { text: "Decreased cardiac output and decreased TPR", isCorrect: false },
+                        { text: "Normal cardiac output and increased TPR", isCorrect: false }
+                    ],
+                    explanation: "Severe dehydration reduces blood volume, leading to decreased venous return and decreased stroke volume (Frank-Starling mechanism). The baroreceptor reflex responds to the resulting hypotension by increasing heart rate and causing vasoconstriction (increased TPR) to maintain blood pressure."
+                },
+                {
+                    question: "A research study measures the following pressures in a capillary: Pc = 30 mmHg, πc = 20 mmHg, Pi = 2 mmHg. Assuming normal interstitial osmotic pressure, what is the net fluid movement?",
+                    options: [
+                        { text: "8 mmHg into the capillary", isCorrect: false },
+                        { text: "8 mmHg out of the capillary", isCorrect: true },
+                        { text: "12 mmHg into the capillary", isCorrect: false },
+                        { text: "12 mmHg out of the capillary", isCorrect: false },
+                        { text: "No net movement", isCorrect: false }
+                    ],
+                    explanation: "Net filtration pressure = Pc - πc - Pi. With normal interstitial osmotic pressure being negligible: Net = 30 - 20 - 2 = +8 mmHg outward (filtration). The positive value indicates net movement out of the capillary."
+                },
+                {
+                    question: "A patient receives a drug that selectively blocks α₁-adrenergic receptors. The most likely cardiovascular effect would be:",
+                    options: [
+                        { text: "Increased heart rate and increased blood pressure", isCorrect: false },
+                        { text: "Decreased heart rate and decreased blood pressure", isCorrect: false },
+                        { text: "Increased heart rate and decreased blood pressure", isCorrect: true },
+                        { text: "Decreased heart rate and increased blood pressure", isCorrect: false },
+                        { text: "No significant cardiovascular effects", isCorrect: false }
+                    ],
+                    explanation: "α₁-adrenergic receptor blockade prevents sympathetic vasoconstriction, leading to vasodilation and decreased total peripheral resistance (TPR). This reduces blood pressure. The baroreceptor reflex responds to the hypotension by increasing heart rate to compensate."
+                },
+                {
+                    question: "A patient with chronic kidney disease develops anemia (low RBC count) and fluid retention. How would these conditions affect the relationship MAP = CO × TPR?",
+                    options: [
+                        { text: "Both conditions increase MAP by increasing CO", isCorrect: false },
+                        { text: "Anemia decreases TPR while fluid retention increases CO, with unpredictable MAP effects", isCorrect: true },
+                        { text: "Both conditions decrease TPR, significantly lowering MAP", isCorrect: false },
+                        { text: "Anemia increases TPR while fluid retention decreases CO", isCorrect: false },
+                        { text: "Both conditions increase TPR, significantly raising MAP", isCorrect: false }
+                    ],
+                    explanation: "Anemia reduces blood viscosity, which decreases total peripheral resistance (TPR). Fluid retention increases blood volume, which increases venous return and cardiac output (CO). The net effect on MAP (MAP = CO x TPR) is unpredictable as one factor increases it while the other decreases it."
+                },
+                {
+                    question: "During a cardiac catheterization, a patient's pulmonary capillary wedge pressure is elevated, but their systemic arterial pressure is normal. This pattern most likely indicates:",
+                    options: [
+                        { text: "Right heart failure with normal left heart function", isCorrect: false },
+                        { text: "Left heart failure with compensated systemic pressure", isCorrect: true },
+                        { text: "Bilateral heart failure with normal vascular function", isCorrect: false },
+                        { text: "Normal heart function with pulmonary hypertension", isCorrect: false },
+                        { text: "Systemic hypertension with normal pulmonary pressures", isCorrect: false }
+                    ],
+                    explanation: "Elevated pulmonary capillary wedge pressure reflects elevated left atrial pressure, a hallmark of left heart failure. Normal systemic arterial pressure suggests compensatory mechanisms (e.g., increased sympathetic drive) are maintaining systemic pressure despite the failing left ventricle."
+                },
+                {
+                    question: "A marathon runner at mile 20 has the following physiological state: high cardiac output, vasodilation in active muscles, vasoconstriction in splanchnic circulation, and stable blood pressure. Which factor is most crucial for maintaining blood pressure in this scenario?",
+                    options: [
+                        { text: "Increased total peripheral resistance from widespread vasoconstriction", isCorrect: false },
+                        { text: "Selective redistribution of blood flow maintaining overall vascular resistance", isCorrect: true },
+                        { text: "Decreased blood volume from sweating", isCorrect: false },
+                        { text: "Increased blood viscosity from dehydration", isCorrect: false },
+                        { text: "Parasympathetic withdrawal allowing unopposed sympathetic activity", isCorrect: false }
+                    ],
+                    explanation: "The key is selective vascular control. While massive vasodilation occurs in active muscles (decreasing resistance), sympathetic vasoconstriction in inactive tissues (splanchnic, renal) increases resistance there. This redistribution maintains a relatively stable total peripheral resistance (TPR) and thus blood pressure."
+                },
+                {
+                    question: "A patient with septic shock has warm, flushed skin and hypotension despite having an elevated cardiac output. The underlying pathophysiology most likely involves:",
+                    options: [
+                        { text: "Cardiogenic shock with pump failure", isCorrect: false },
+                        { text: "Hypovolemic shock with decreased preload", isCorrect: false },
+                        { text: "Distributive shock with decreased systemic vascular resistance", isCorrect: true },
+                        { text: "Obstructive shock with impaired venous return", isCorrect: false },
+                        { text: "Mixed shock with both cardiac and vascular components", isCorrect: false }
+                    ],
+                    explanation: "Septic shock is a classic form of distributive shock. Inflammatory mediators cause widespread vasodilation, leading to a severe drop in systemic vascular resistance (SVR/TPR). The heart compensates with a high cardiac output, but it's not enough to overcome the massive vasodilation, resulting in hypotension."
+                }
+            ];
+
+            const quizBody = document.getElementById('quiz-body');
+            let userAnswers = new Array(quizData.length).fill(null);
+
+            // --- FUNCTIONS ---
+
+            /**
+             * Shuffles an array in place using the Fisher-Yates algorithm.
+             * @param {Array} array The array to shuffle.
+             */
+            function shuffleArray(array) {
+                for (let i = array.length - 1; i > 0; i--) {
+                    const j = Math.floor(Math.random() * (i + 1));
+                    [array[i], array[j]] = [array[j], array[i]];
+                }
+            }
+
+            /**
+             * Renders the entire quiz, shuffling options for each question.
+             */
+            function renderQuiz() {
+                quizData.forEach((qData, index) => {
+                    const questionBlock = document.createElement('div');
+                    questionBlock.className = 'question-block';
+                    questionBlock.setAttribute('data-question-index', index);
+
+                    // Shuffle options before rendering
+                    shuffleArray(qData.options);
+
+                    const optionsHTML = qData.options.map((option, optIndex) => `
+                        <label class="block p-3 my-2 border border-gray-300 rounded-lg cursor-pointer hover:bg-gray-100 transition-colors">
+                            <input type="radio" name="question${index}" value="${optIndex}" class="mr-3 align-middle">
+                            <span class="text-gray-700">${option.text}</span>
+                        </label>
+                    `).join('');
+
+                    questionBlock.innerHTML = `
+                        <p class="text-lg font-semibold text-gray-800 mb-4">${index + 1}. ${qData.question}</p>
+                        <div class="options-container">${optionsHTML}</div>
+                        <button class="show-explanation-btn mt-4 bg-gray-200 text-gray-700 font-semibold py-2 px-4 rounded-lg hover:bg-gray-300 focus:outline-none focus:ring-2 focus:ring-gray-400 transition-all">
+                            Show Explanation
+                        </button>
+                        <div class="explanation">
+                            <p class="font-bold">Explanation:</p>
+                            <p>${qData.explanation}</p>
+                        </div>
+                    `;
+                    quizBody.appendChild(questionBlock);
+                });
+                addEventListeners();
+            }
+
+            /**
+             * Adds event listeners to all buttons and radio inputs.
+             */
+            function addEventListeners() {
+                document.querySelectorAll('.show-explanation-btn').forEach(button => {
+                    button.addEventListener('click', handleShowExplanation);
+                });
+
+                document.getElementById('submit-quiz').addEventListener('click', handleSubmitQuiz);
+            }
+            
+            /**
+             * Handles the logic for the "Show Explanation" button click.
+             * @param {Event} event The click event.
+             */
+            function handleShowExplanation(event) {
+                const button = event.target;
+                const questionBlock = button.closest('.question-block');
+                const questionIndex = parseInt(questionBlock.dataset.questionIndex, 10);
+                
+                // Prevent re-answering
+                if (questionBlock.dataset.answered) return;
+                questionBlock.dataset.answered = 'true';
+
+                const qData = quizData[questionIndex];
+                const selectedRadio = questionBlock.querySelector(`input[name="question${questionIndex}"]:checked`);
+                
+                let selectedOptionIndex = -1;
+                if (selectedRadio) {
+                    selectedOptionIndex = parseInt(selectedRadio.value, 10);
+                    userAnswers[questionIndex] = qData.options[selectedOptionIndex].isCorrect;
+                } else {
+                    // Mark as incorrect if no answer was selected
+                    userAnswers[questionIndex] = false;
+                }
+
+                // Highlight correct and incorrect answers
+                const allLabels = questionBlock.querySelectorAll('label');
+                allLabels.forEach((label, optIndex) => {
+                    const option = qData.options[optIndex];
+                    if (option.isCorrect) {
+                        label.classList.add('correct-answer');
+                    } else if (optIndex === selectedOptionIndex && !option.isCorrect) {
+                        label.classList.add('incorrect-answer');
+                    }
+                });
+
+                // Disable all radio buttons for this question
+                questionBlock.querySelectorAll(`input[name="question${questionIndex}"]`).forEach(radio => {
+                    radio.disabled = true;
+                });
+
+                // Show the explanation
+                const explanationDiv = questionBlock.querySelector('.explanation');
+                explanationDiv.style.display = 'block';
+                button.disabled = true;
+                button.textContent = 'Answer Submitted';
+                button.classList.remove('bg-gray-200', 'hover:bg-gray-300');
+                button.classList.add('bg-gray-400', 'text-white', 'cursor-not-allowed');
+            }
+
+            /**
+             * Calculates and displays the final score.
+             */
+            function handleSubmitQuiz() {
+                // First, trigger check for any unanswered questions
+                document.querySelectorAll('.question-block:not([data-answered])').forEach(block => {
+                    const btn = block.querySelector('.show-explanation-btn');
+                    if (btn) btn.click();
+                });
+                
+                const correctCount = userAnswers.filter(answer => answer === true).length;
+                const totalQuestions = quizData.length;
+                const scorePercentage = (correctCount / totalQuestions) * 100;
+
+                const scoreText = document.getElementById('score-text');
+                const feedbackText = document.getElementById('feedback-text');
+                const resultsContainer = document.getElementById('results-container');
+                
+                scoreText.textContent = `You scored ${correctCount} out of ${totalQuestions} (${scorePercentage.toFixed(1)}%)`;
+
+                if (scorePercentage >= 80) {
+                    feedbackText.textContent = "Excellent work! You have a strong grasp of these concepts.";
+                } else if (scorePercentage >= 60) {
+                    feedbackText.textContent = "Good job! A little more review will make you an expert.";
+                } else {
+                    feedbackText.textContent = "Keep studying! Review the explanations to improve your understanding.";
+                }
+
+                resultsContainer.style.display = 'block';
+                resultsContainer.scrollIntoView({ behavior: 'smooth' });
+            }
+
+            // --- INITIALIZATION ---
+            renderQuiz();
+        });
+    </script>
+
+</body>
+</html>

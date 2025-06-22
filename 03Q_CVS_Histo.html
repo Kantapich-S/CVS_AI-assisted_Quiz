@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cardiovascular System Histology - USMLE-Style Quiz</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+        .explanation {
+            display: none;
+            transition: all 0.5s ease-in-out;
+        }
+    </style>
+</head>
+<body class="bg-gray-50 text-gray-800">
+
+    <div class="container mx-auto p-4 md:p-8 max-w-4xl">
+        <header class="text-center mb-8 md:mb-12">
+            <h1 class="text-3xl md:text-4xl font-bold text-gray-900">Cardiovascular System Histology Quiz</h1>
+            <p class="text-md text-gray-600 mt-2">USMLE-Style Multiple Choice Questions</p>
+        </header>
+
+        <main id="quiz-container" class="space-y-8">
+            <!-- Questions will be dynamically inserted here by JavaScript -->
+        </main>
+
+        <footer class="text-center mt-12 pt-6 border-t border-gray-200">
+            <p class="text-xs text-gray-500">
+                <strong>Disclaimer:</strong> This file was created by Ktp, with assistance from AI tools (e.g., ChatGPT, Gemini, Claude, and Perplexity) for content generation and editing. Please double-check all information for accuracy and reliability.
+            </p>
+        </footer>
+    </div>
+
+    <script>
+        const quizData = [
+            {
+                question: "The three layers of blood vessel walls, from innermost to outermost, are:",
+                options: ["Tunica adventitia → Tunica media → Tunica intima", "Tunica intima → Tunica media → Tunica adventitia", "Tunica media → Tunica intima → Tunica adventitia", "Tunica intima → Tunica adventitia → Tunica media", "Tunica media → Tunica adventitia → Tunica intima"],
+                correctAnswer: "Tunica intima → Tunica media → Tunica adventitia",
+                explanation: "The universal structural organization of blood vessels consists of three concentric layers. The tunica intima is the innermost layer containing the endothelium, the tunica media is the middle layer primarily composed of smooth muscle, and the tunica adventitia is the outermost layer of connective tissue. The other options represent incorrect sequences of these layers."
+            },
+            {
+                question: "Which type of epithelium lines the endothelium of blood vessels?",
+                options: ["Simple cuboidal epithelium", "Stratified squamous epithelium", "Simple squamous epithelium", "Pseudostratified columnar epithelium", "Transitional epithelium"],
+                correctAnswer: "Simple squamous epithelium",
+                explanation: "The endothelium of all blood vessels is lined by simple squamous epithelium, which provides a smooth surface for blood flow and minimal barrier thickness for exchange processes. Simple cuboidal epithelium is found in kidney tubules, stratified squamous in skin and oral cavity, pseudostratified columnar in respiratory tract, and transitional epithelium in the urinary bladder."
+            },
+            {
+                question: "The primary cell type found in the tunica media of blood vessels is:",
+                options: ["Fibroblasts", "Endothelial cells", "Smooth muscle cells", "Pericytes", "Macrophages"],
+                correctAnswer: "Smooth muscle cells",
+                explanation: "The tunica media is primarily composed of smooth muscle cells arranged in a helical pattern, which allows for vasoconstriction and vasodilation. Fibroblasts are found mainly in the adventitia, endothelial cells line the intima, pericytes are associated with capillaries, and macrophages are immune cells that may be present but are not the primary structural component."
+            },
+            {
+                question: "Large elastic arteries are also known as:",
+                options: ["Distributing arteries", "Resistance arteries", "Conducting arteries", "Muscular arteries", "Capacitance arteries"],
+                correctAnswer: "Conducting arteries",
+                explanation: "Large elastic arteries like the aorta are called conducting arteries because their primary function is to conduct blood from the heart to the periphery while maintaining pressure through elastic recoil. Distributing arteries are medium muscular arteries, resistance arteries are arterioles, and capacitance arteries refer to veins."
+            },
+            {
+                question: "Which structure is responsible for preventing backflow in the venous system?",
+                options: ["Internal elastic lamina", "Smooth muscle sphincters", "Venous valves", "Pericytes", "External elastic lamina"],
+                correctAnswer: "Venous valves",
+                explanation: "Venous valves are specialized structures formed by endothelial folds that prevent backflow of blood in the venous system, particularly important in extremities where blood must flow against gravity. The elastic laminae are structural components of arterial walls, smooth muscle sphincters control flow at specific locations, and pericytes are capillary-associated cells."
+            },
+            {
+                question: "The specialized lymphatic capillaries found in the small intestine villi are called:",
+                options: ["Sinusoids", "Lacteals", "Fenestrated capillaries", "High endothelial venules", "Continuous capillaries"],
+                correctAnswer: "Lacteals",
+                explanation: "Lacteals are specialized lymphatic capillaries located in the core of small intestine villi that absorb dietary fats and fat-soluble vitamins. Sinusoids are found in liver and spleen, fenestrated capillaries have pores for enhanced exchange, high endothelial venules are in lymphoid organs for lymphocyte recruitment, and continuous capillaries are the most common type."
+            },
+            {
+                question: "Purkinje fibers can be distinguished from regular cardiac muscle fibers by:",
+                options: ["Smaller diameter and dense myofibril content", "Absence of intercalated discs", "Greater diameter and abundant glycogen content", "Presence of multiple nuclei per cell", "Darker staining due to increased mitochondria"],
+                correctAnswer: "Greater diameter and abundant glycogen content",
+                explanation: "Purkinje fibers are specialized cardiac conducting cells that are larger in diameter than regular cardiac muscle fibers and contain abundant glycogen, giving them a paler appearance with sparse myofibril bundles. They retain intercalated discs, typically have one nucleus like other cardiac cells, and actually stain lighter due to reduced myofibril content."
+            },
+            {
+                question: "Which type of capillary has a discontinuous basement membrane?",
+                options: ["Continuous capillaries", "Fenestrated capillaries", "Sinusoids", "Lymphatic capillaries", "Arterial capillaries"],
+                correctAnswer: "Sinusoids",
+                explanation: "Sinusoids (discontinuous capillaries) have a partial, discontinuous basement membrane along with large fenestrations and gaps between endothelial cells, facilitating exchange of large molecules and cells. Continuous and fenestrated capillaries have continuous basement membranes, lymphatic capillaries have minimal basement membrane, and 'arterial capillaries' is not a recognized category."
+            },
+            {
+                question: "In which condition would you expect to see diffuse capillary basement membrane thickening?",
+                options: ["Hypertension", "Atherosclerosis", "Diabetic microangiopathy", "Varicose veins", "Pulmonary embolism"],
+                correctAnswer: "Diabetic microangiopathy",
+                explanation: "Diabetic microangiopathy is characterized by diffuse thickening of capillary basement membranes, particularly affecting kidneys, retina, skeletal muscle, and skin. Hypertension affects larger vessels, atherosclerosis involves arterial wall changes, varicose veins are venous valve problems, and pulmonary embolism is a thrombotic event."
+            },
+            {
+                question: "The primary site where white blood cells exit the circulation during inflammation is:",
+                options: ["Elastic arteries", "Muscular arteries", "Arterioles", "Postcapillary venules", "Large veins"],
+                correctAnswer: "Postcapillary venules",
+                explanation: "Postcapillary venules are the principal site of white blood cell emigration during inflammatory responses. They respond to vasoactive agents like histamine and serotonin, allowing fluid extravasation and leukocyte migration. Other vessel types are not primarily involved in this inflammatory process."
+            },
+            {
+                question: "A 45-year-old patient with diabetes develops retinal complications. The underlying pathological process most likely involves:",
+                options: ["Arterial smooth muscle hypertrophy", "Venous valve incompetence", "Capillary basement membrane thickening", "Elastic lamina fragmentation", "Lymphatic vessel obstruction"],
+                correctAnswer: "Capillary basement membrane thickening",
+                explanation: "Diabetic retinopathy is a manifestation of diabetic microangiopathy, which involves diffuse thickening of capillary basement membranes in the retina, leading to impaired vascular function and complications. The other options represent different vascular pathologies not specifically associated with diabetic microvascular disease."
+            },
+            {
+                question: "Which vessel type would have the thickest tunica adventitia relative to its tunica media?",
+                options: ["Aorta", "Coronary artery", "Arteriole", "Inferior vena cava", "Pulmonary artery"],
+                correctAnswer: "Inferior vena cava",
+                explanation: "Large veins like the inferior vena cava have a characteristic feature where the tunica adventitia is thicker than the tunica media, which is poorly developed. In contrast, arteries (aorta, coronary, pulmonary) have thick tunica media, and arterioles have minimal adventitia."
+            },
+            {
+                question: "A pathologist examining a tissue sample identifies vessels with high endothelial venules. This tissue is most likely from:",
+                options: ["Liver sinusoids", "Renal glomeruli", "Lymph node", "Pulmonary capillaries", "Coronary circulation"],
+                correctAnswer: "Lymph node",
+                explanation: "High endothelial venules (HEVs) are specialized postcapillary venules with prominent cuboidal endothelial cells found in lymphoid organs like lymph nodes, tonsils, and lymphoid aggregates (except spleen). They function in lymphocyte recruitment. The other locations have different specialized capillary types."
+            },
+            {
+                question: "An elderly patient develops an abdominal aortic aneurysm. This condition primarily results from pathological changes in which arterial component?",
+                options: ["Endothelial lining", "Smooth muscle cells", "Elastic fiber network", "Adventitial collagen", "Vasa vasorum"],
+                correctAnswer: "Elastic fiber network",
+                explanation: "Aneurysm formation in elastic arteries like the aorta primarily results from destruction and weakening of the elastic fiber network, which normally provides structural integrity and elastic recoil. While other components may be secondarily affected, the loss of elastic fiber integrity is the primary mechanism in aneurysm development."
+            },
+            {
+                question: "A surgeon performing a cancer resection removes regional lymph nodes for staging. The primary reason for this procedure is that lymphatic vessels:",
+                options: ["Have thick muscular walls that resist tumor invasion", "Contain valves that prevent retrograde spread", "Facilitate distribution of malignant cells", "Are lined with specialized immune cells", "Have continuous basement membranes"],
+                correctAnswer: "Facilitate distribution of malignant cells",
+                explanation: "Lymphatic vessels facilitate the distribution of pathogens, parasites, and malignant cells throughout the body, making lymph node assessment critical for cancer staging. Unlike the other options, lymphatics have thin walls, valves don't prevent all retrograde flow (especially around nodes), they're not specifically lined with immune cells, and they have minimal basement membranes."
+            },
+            {
+                question: "A 55-year-old patient with a history of smoking and diabetes presents with chest pain. Coronary angiography reveals significant atherosclerotic plaques. The initial pathological event in atherosclerosis development is:",
+                options: ["Smooth muscle cell proliferation", "Foam cell formation", "Endothelial dysfunction", "Lipid core development", "Fibrous cap formation"],
+                correctAnswer: "Endothelial dysfunction",
+                explanation: "Endothelial dysfunction is the initial event in atherosclerosis pathogenesis, leading to increased permeability and adhesion molecule expression. This precedes LDL oxidation, monocyte recruitment, foam cell formation, and subsequent plaque development. The other options represent later stages in the atherosclerotic process."
+            },
+            {
+                question: "A patient with chronic heart failure has elevated ventricular wall thickness. This adaptation primarily affects which cardiac layer?",
+                options: ["Endocardium", "Myocardium", "Epicardium", "Pericardium", "Conducting system"],
+                correctAnswer: "Myocardium",
+                explanation: "Ventricular wall thickening (hypertrophy) in heart failure primarily involves the myocardium, which contains the contractile cardiac muscle fibers. This layer increases in thickness as an adaptive response to increased workload. The endocardium and epicardium are thin layers, the pericardium is external to the heart, and the conducting system is embedded within the myocardium."
+            },
+            {
+                question: "A researcher studying vascular development notes that during embryogenesis, certain vessels develop thicker walls in response to increased pressure. This adaptive response primarily involves changes in the:",
+                options: ["Endothelial cell morphology", "Basement membrane composition", "Smooth muscle cell layers", "Adventitial fibroblast density", "Capillary fenestration patterns"],
+                correctAnswer: "Smooth muscle cell layers",
+                explanation: "Vascular adaptation to increased pressure primarily involves changes in smooth muscle cell layers in the tunica media. This represents the functional adaptation principle where vessel wall thickness correlates with pressure demands. Endothelial morphology changes are minimal, basement membrane changes are not the primary adaptation, adventitial changes are secondary, and fenestration patterns are specific to capillary function."
+            },
+            {
+                question: "A patient with severe peripheral arterial disease undergoes bypass surgery using a saphenous vein graft. Over time, the graft will likely undergo structural changes to adapt to the arterial environment. The most significant adaptation will be:",
+                options: ["Development of fenestrations in the endothelium", "Reduction in smooth muscle content", "Thickening of the tunica media", "Formation of lymphatic vessels in the wall", "Replacement of the endothelium with epithelium"],
+                correctAnswer: "Thickening of the tunica media",
+                explanation: "When a vein is placed in an arterial environment, it must adapt to higher pressures and different flow patterns. The most significant adaptation is thickening of the tunica media through smooth muscle cell proliferation and matrix deposition to withstand arterial pressures. The other options do not represent typical vein-to-artery adaptations and some are pathological rather than adaptive changes."
+            }
+        ];
+
+        /**
+         * Shuffles array in place.
+         * @param {Array} a items An array containing the items.
+         */
+        function shuffle(a) {
+            let j, x, i;
+            for (i = a.length - 1; i > 0; i--) {
+                j = Math.floor(Math.random() * (i + 1));
+                x = a[i];
+                a[i] = a[j];
+                a[j] = x;
+            }
+            return a;
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            const quizContainer = document.getElementById('quiz-container');
+            if (!quizContainer) return;
+
+            // Generate and append each question to the container
+            quizData.forEach((item, index) => {
+                // Shuffle options for the current question
+                const shuffledOptions = shuffle([...item.options]);
+                
+                // Create the HTML for the options
+                const optionsHtml = shuffledOptions.map(option => `
+                    <li class="option-item border border-gray-300 rounded-lg p-3 hover:bg-gray-100 cursor-pointer transition-colors duration-200">
+                        ${option}
+                    </li>
+                `).join('');
+                
+                // Create the full question card HTML
+                const questionHtml = `
+                    <div class="bg-white p-6 rounded-xl shadow-md border border-gray-200" data-question-index="${index}">
+                        <h3 class="font-semibold text-lg text-gray-800 mb-4">${index + 1}. ${item.question}</h3>
+                        <ul class="space-y-3 mb-5">
+                            ${optionsHtml}
+                        </ul>
+                        <button class="show-explanation-btn bg-blue-600 text-white font-medium py-2 px-4 rounded-lg hover:bg-blue-700 transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">
+                            Show Explanation
+                        </button>
+                        <div class="explanation mt-4 p-4 bg-blue-50 border border-blue-200 rounded-lg">
+                            <p class="font-semibold text-blue-800">Explanation:</p>
+                            <p class="text-blue-700">${item.explanation}</p>
+                        </div>
+                    </div>
+                `;
+                quizContainer.innerHTML += questionHtml;
+            });
+
+            // Add event listeners to all "Show Explanation" buttons
+            document.querySelectorAll('.show-explanation-btn').forEach(button => {
+                button.addEventListener('click', (event) => {
+                    const questionCard = event.target.closest('[data-question-index]');
+                    const questionIndex = parseInt(questionCard.getAttribute('data-question-index'));
+                    const questionData = quizData[questionIndex];
+
+                    // Show the explanation panel
+                    const explanationPanel = questionCard.querySelector('.explanation');
+                    explanationPanel.style.display = 'block';
+
+                    // Highlight the correct answer
+                    const options = questionCard.querySelectorAll('.option-item');
+                    options.forEach(option => {
+                        // Reset any previous styling
+                        option.classList.remove('bg-green-100', 'border-green-400', 'font-bold', 'text-green-800');
+                        
+                        if (option.textContent.trim() === questionData.correctAnswer) {
+                            option.classList.add('bg-green-100', 'border-green-400', 'font-bold', 'text-green-800');
+                        }
+                    });
+
+                    // Hide the button after it's clicked
+                    event.target.style.display = 'none';
+                });
+            });
+        });
+    </script>
+</body>
+</html>

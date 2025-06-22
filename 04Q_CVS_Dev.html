@@ -1,0 +1,372 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cardiovascular Development Quiz</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+        .explanation {
+            transition: all 0.3s ease-in-out;
+        }
+    </style>
+</head>
+<body class="bg-gray-50 text-gray-800">
+
+    <div class="container mx-auto p-4 sm:p-6 lg:p-8 max-w-4xl">
+        <header class="text-center mb-8">
+            <h1 class="text-3xl sm:text-4xl font-bold text-gray-900">Cardiovascular Development Assessment</h1>
+            <p class="text-md text-gray-600 mt-2">Test your knowledge with these 20 multiple-choice questions.</p>
+        </header>
+
+        <main id="quiz-container" class="space-y-6">
+            <!-- Quiz questions will be dynamically inserted here by JavaScript -->
+        </main>
+
+        <footer class="text-center mt-12 pt-6 border-t border-gray-200">
+            <p class="text-xs text-gray-500">
+                <strong>Disclaimer:</strong> This file was created by Ktp, with assistance from AI tools (e.g., ChatGPT, Gemini, Claude, and Perplexity) for content generation and editing. Please double-check all information for accuracy and reliability.
+            </p>
+        </footer>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // --- DATA ---
+            // The quiz data is stored in an array of objects.
+            // Each object contains the question, an array of answer options, and the explanation.
+            // The 'correct' property in an option marks the right answer.
+            const quizData = [
+                {
+                    question: "When does the heart begin beating during embryonic development?",
+                    options: [
+                        { text: "Day 18-19 of week 3", correct: false },
+                        { text: "Day 22-23 of week 4", correct: true },
+                        { text: "Day 25-26 of week 4", correct: false },
+                        { text: "Week 5", correct: false },
+                        { text: "Week 6", correct: false }
+                    ],
+                    explanation: "The heart begins beating at day 22-23 of week 4, establishing unidirectional blood flow through the primitive cardiovascular system. This is a critical milestone in early cardiac development. Options A and C represent incorrect timing within the developmental sequence. Options D and E are too late in development, as the heart needs to function earlier to support the growing embryo."
+                },
+                {
+                    question: "Which gene serves as the master regulatory gene for cardiac development?",
+                    options: [
+                        { text: "HAND1", correct: false },
+                        { text: "HAND2", correct: false },
+                        { text: "NKX2.5", correct: true },
+                        { text: "BMP2", correct: false },
+                        { text: "CRESCENT", correct: false }
+                    ],
+                    explanation: "NKX2.5 is the master regulatory gene for cardiac development that orchestrates the entire cardiovascular developmental program. It is induced by BMP 2,4 proteins and WNT inhibitor (CRESCENT) and stimulates splanchnic mesoderm differentiation. HAND1 and HAND2 are downstream genes activated by NKX2.5 for ventricular development. BMP2 and CRESCENT are signaling molecules that induce NKX2.5, not master regulators themselves."
+                },
+                {
+                    question: "What are the three layers of the heart tube from innermost to outermost?",
+                    options: [
+                        { text: "Epicardium, myocardium, endocardium", correct: false },
+                        { text: "Endocardium, cardiac jelly, myocardium", correct: false },
+                        { text: "Endocardium, myocardium, epicardium", correct: true },
+                        { text: "Myocardium, endocardium, epicardium", correct: false },
+                        { text: "Cardiac jelly, endocardium, myocardium", correct: false }
+                    ],
+                    explanation: "The heart tube consists of three main layers: endocardium (innermost lining from endothelial cells), myocardium (middle muscular layer), and epicardium (outermost layer). Both myocardium and epicardium develop from surrounding splanchnic mesoderm. Cardiac jelly is an extracellular matrix component, not a primary structural layer. The other options present incorrect layer arrangements."
+                },
+                {
+                    question: "Which aortic arch gives rise to the common and internal carotid arteries?",
+                    options: [
+                        { text: "1st aortic arch", correct: false },
+                        { text: "2nd aortic arch", correct: false },
+                        { text: "3rd aortic arch", correct: true },
+                        { text: "4th aortic arch", correct: false },
+                        { text: "6th aortic arch", correct: false }
+                    ],
+                    explanation: "The 3rd aortic arch develops into the common and internal carotid arteries. The 1st and 2nd arches regress early and only contribute to maxillary and hyoid arteries. The 4th arch forms the right subclavian artery (right side) and arch of aorta (left side). The 6th arch contributes to the ductus arteriosus and left pulmonary artery on the left side."
+                },
+                {
+                    question: "What is the primary mechanism responsible for atrioventricular canal partitioning?",
+                    options: [
+                        { text: "Neural crest cell migration", correct: false },
+                        { text: "Apoptosis of cardiac muscle", correct: false },
+                        { text: "Endocardial-to-mesenchymal transformation", correct: true },
+                        { text: "Hemodynamic pressure changes", correct: false },
+                        { text: "Genetic mutation", correct: false }
+                    ],
+                    explanation: "Atrioventricular canal partitioning occurs through endocardial-to-mesenchymal transformation, where myocardium induces endocardial cells to transform into mesenchymal cells, forming ventral and dorsal AV endocardial cushions. Neural crest cell migration is important for outflow tract development. Apoptosis occurs during septal formation but is not the primary mechanism for AV canal partitioning. Hemodynamic changes influence development but are not the primary mechanism. Genetic mutations cause defects, not normal development."
+                },
+                {
+                    question: "What structure in the adult heart represents the remnant of the foramen ovale?",
+                    options: [
+                        { text: "Coronary sinus", correct: false },
+                        { text: "Fossa ovalis", correct: true },
+                        { text: "Crista terminalis", correct: false },
+                        { text: "Sinus venarum", correct: false },
+                        { text: "Ligamentum arteriosum", correct: false }
+                    ],
+                    explanation: "The fossa ovalis is the adult remnant of the foramen ovale, which allowed right-to-left shunting in fetal circulation. The coronary sinus develops from the left horn of the sinus venosus. The crista terminalis is the ridge between smooth and trabeculated atrial regions. The sinus venarum develops from the right horn of the sinus venosus. The ligamentum arteriosum is the remnant of the ductus arteriosus."
+                },
+                {
+                    question: "During ventricular septation, what two components form the complete interventricular septum?",
+                    options: [
+                        { text: "Septum primum and septum secundum", correct: false },
+                        { text: "Muscular part and membranous part", correct: true },
+                        { text: "Endocardial cushions and neural crest cells", correct: false },
+                        { text: "Bulbar ridges and conotruncal ridges", correct: false },
+                        { text: "Left and right ventricular walls", correct: false }
+                    ],
+                    explanation: "The interventricular septum consists of two parts: the muscular part (crescentric fold from ventricular floor myocytes) and the membranous part (connective tissue from endocardial cushions). Septum primum and secundum are components of atrial septation. Endocardial cushions contribute to the membranous part, but neural crest cells are involved in outflow tract development. Bulbar and conotruncal ridges are involved in outflow tract septation. The ventricular walls themselves don't form the septum."
+                },
+                {
+                    question: "What causes the spiral arrangement of the aorta and pulmonary trunk in the adult heart?",
+                    options: [
+                        { text: "Cardiac looping during week 4", correct: false },
+                        { text: "180-degree rotation during conotruncal septation", correct: true },
+                        { text: "Asymmetric growth of ventricular walls", correct: false },
+                        { text: "Neural crest cell differentiation", correct: false },
+                        { text: "Regression of aortic arches", correct: false }
+                    ],
+                    explanation: "The spiral arrangement results from 180-degree rotation during fusion of conotruncal ridges, creating the aorticopulmonary septum with helical arrangement as seen in adults. Cardiac looping establishes basic heart positioning but doesn't create the spiral arrangement. Ventricular wall growth affects chamber size, not great vessel arrangement. Neural crest cell differentiation contributes to septation but the rotation is the key mechanism. Aortic arch regression affects vessel connections, not the spiral arrangement."
+                },
+                {
+                    question: "Which venous structure undergoes left-to-right shunting during development, contributing to the asymmetric development of the venous system?",
+                    options: [
+                        { text: "Posterior cardinal veins only", correct: false },
+                        { text: "Umbilical veins only", correct: false },
+                        { text: "Vitelline, umbilical, and cardinal veins", correct: true },
+                        { text: "Pulmonary veins only", correct: false },
+                        { text: "Subcardinal veins only", correct: false }
+                    ],
+                    explanation: "Left-to-right shunting occurs in vitelline, umbilical, and cardinal vein systems, contributing to the asymmetric development where right-sided structures typically predominate in the adult. This comprehensive shunting pattern affects multiple venous systems simultaneously. Individual systems (posterior cardinal only, umbilical only, etc.) don't account for the complete pattern of asymmetric venous development. Pulmonary veins develop differently and don't show this left-to-right shunting pattern."
+                },
+                {
+                    question: "A patient presents with dextrocardia with situs inversus. What developmental process was most likely disrupted?",
+                    options: [
+                        { text: "Neural crest cell migration", correct: false },
+                        { text: "Endocardial cushion formation", correct: false },
+                        { text: "Cardiac looping direction", correct: true },
+                        { text: "Aortic arch development", correct: false },
+                        { text: "Ventricular septation", correct: false }
+                    ],
+                    explanation: "Dextrocardia results from altered cardiac looping direction (leftward instead of normal rightward/dextral looping). When associated with situs inversus, it involves broader laterality determination affecting multiple organ systems. Neural crest cell migration affects outflow tract development. Endocardial cushion formation affects AV canal and septal development. Aortic arch development affects great vessel formation. Ventricular septation affects chamber separation but not cardiac position."
+                },
+                {
+                    question: "A newborn has a ventricular septal defect (VSD) in the membranous portion of the interventricular septum. What developmental process failed to complete properly?",
+                    options: [
+                        { text: "Muscular interventricular septum formation", correct: false },
+                        { text: "Closure of the interventricular foramen", correct: true },
+                        { text: "Endocardial cushion development", correct: false },
+                        { text: "Conotruncal ridge fusion", correct: false },
+                        { text: "Bulboventricular loop formation", correct: false }
+                    ],
+                    explanation: "Membranous VSD results from incomplete closure of the interventricular foramen, which normally closes by week 7 through fusion of bulbar ridges and AV cushions to form the membranous part of the interventricular septum. Muscular septum formation creates the muscular portion, not the membranous portion. Endocardial cushion development contributes to AV canal partitioning and the membranous septum but the specific defect is interventricular foramen closure failure. Conotruncal ridge fusion affects outflow tract septation. Bulboventricular loop formation affects cardiac positioning."
+                },
+                {
+                    question: "Why do the left and right recurrent laryngeal nerves have different anatomical courses in the adult?",
+                    options: [
+                        { text: "Differential neural crest cell migration patterns", correct: false },
+                        { text: "Asymmetric development of the pharyngeal pouches", correct: false },
+                        { text: "Asymmetric regression of aortic arches", correct: true },
+                        { text: "Different embryonic origins of the nerves", correct: false },
+                        { text: "Asymmetric cardiac looping", correct: false }
+                    ],
+                    explanation: "The different courses result from asymmetric aortic arch development: the left recurrent laryngeal nerve hooks around the ligamentum arteriosum/aortic arch (from left 4th arch), while the right hooks around the right subclavian artery (from right 4th arch). The 5th and distal 6th arches regress on the right, while the left 6th arch persists as the ductus arteriosus. Neural crest migration affects cardiac development but not nerve courses. Pharyngeal pouch development affects different structures. The nerves have the same embryonic origin. Cardiac looping affects heart position but not nerve-vessel relationships."
+                },
+                {
+                    question: "In the development of the inferior vena cava (IVC), which venous systems contribute to its formation?",
+                    options: [
+                        { text: "Anterior and posterior cardinal veins only", correct: false },
+                        { text: "Subcardinal and supracardinal veins only", correct: false },
+                        { text: "Vitelline veins, subcardinal veins, and supracardinal veins", correct: true },
+                        { text: "Umbilical and vitelline veins only", correct: false },
+                        { text: "All cardinal vein derivatives", correct: false }
+                    ],
+                    explanation: "The IVC forms from three different venous systems: vitelline veins (hepatic segment), subcardinal veins (middle segment), and supracardinal veins (posterior segment). This complex developmental origin explains the IVC's unique adult anatomy. Cardinal veins alone don't form the complete IVC. Subcardinal and supracardinal systems contribute but vitelline veins are also essential for the hepatic segment. Umbilical veins don't contribute to IVC formation. While cardinal vein derivatives contribute, the specific systems are subcardinal and supracardinal, plus vitelline veins."
+                },
+                {
+                    question: "A fetus has persistent truncus arteriosus. Which of the following additional defects would you most likely expect to find?",
+                    options: [
+                        { text: "Atrial septal defect", correct: false },
+                        { text: "Ventricular septal defect", correct: true },
+                        { text: "Patent foramen ovale", correct: false },
+                        { text: "Mitral valve stenosis", correct: false },
+                        { text: "Tricuspid atresia", correct: false }
+                    ],
+                    explanation: "Persistent truncus arteriosus commonly occurs with VSD because both result from defective conotruncal development. The absent conotruncal ridge formation that causes truncus arteriosus often leads to incomplete ventricular septation. ASD involves different developmental mechanisms (atrial septation). Patent foramen ovale is normal in fetal life. Mitral valve stenosis and tricuspid atresia involve AV valve development, which is separate from conotruncal development that affects truncus arteriosus formation."
+                },
+                {
+                    question: "A patient has tetralogy of Fallot (TOF). What is the underlying developmental mechanism that explains all four components of this complex?",
+                    options: [
+                        { text: "Excessive neural crest cell apoptosis", correct: false },
+                        { text: "Anterior displacement of the conotruncal septum", correct: true },
+                        { text: "Posterior displacement of the conotruncal septum", correct: false },
+                        { text: "Absence of endocardial cushion formation", correct: false },
+                        { text: "Defective cardiac looping", correct: false }
+                    ],
+                    explanation: "TOF results from anterior displacement of the conotruncal septum, which explains all four components: pulmonary stenosis (narrowed outflow), overriding aorta (septum displacement allows aortic communication with both ventricles), VSD (malaligned septum), and right ventricular hypertrophy (secondary to increased workload). Neural crest cell apoptosis would affect outflow tract development differently. Posterior displacement would cause different anomalies. Absent endocardial cushions affect AV development. Defective cardiac looping affects positioning, not the specific TOF morphology."
+                },
+                {
+                    question: "A newborn presents with transposition of the great arteries. From a physiological standpoint, what additional cardiovascular feature would be essential for survival in the immediate neonatal period?",
+                    options: [
+                        { text: "Patent ductus arteriosus", correct: false },
+                        { text: "Ventricular septal defect", correct: false },
+                        { text: "Atrial septal defect", correct: false },
+                        { text: "Any mixing lesion (ASD, VSD, or PDA)", correct: true },
+                        { text: "Tricuspid stenosis", correct: false }
+                    ],
+                    explanation: "In transposition of great arteries, the aorta receives deoxygenated blood from the right ventricle while the pulmonary artery receives oxygenated blood from the left ventricle, creating two parallel circuits. Survival requires mixing of oxygenated and deoxygenated blood, which can occur through any communication: PDA, VSD, or ASD. While PDA, VSD, or ASD individually can provide mixing, the key concept is that ANY mixing lesion is essential for survival. Tricuspid stenosis would worsen the situation by limiting blood flow."
+                },
+                {
+                    question: "During fetal development, the ductus venosus allows blood to bypass the liver. If this structure fails to close after birth, what would be the most significant physiological consequence?",
+                    options: [
+                        { text: "Decreased systemic blood pressure", correct: false },
+                        { text: "Hepatic congestion and portal hypertension", correct: false },
+                        { text: "Reduced oxygenation of systemic blood", correct: false },
+                        { text: "Compromised hepatic metabolic function", correct: true },
+                        { text: "Increased pulmonary blood flow", correct: false }
+                    ],
+                    explanation: "A patent ductus venosus would allow blood to bypass hepatic sinusoids, significantly compromising the liver's metabolic functions including detoxification, protein synthesis, and glucose metabolism. While hepatic congestion might occur, the primary issue is functional compromise. Systemic blood pressure and oxygenation would not be directly affected since this involves hepatic circulation. Pulmonary blood flow would not be increased as this shunt doesn't involve pulmonary circulation."
+                },
+                {
+                    question: "A researcher is studying cardiac development and observes that inhibiting BMP 2,4 proteins during early embryogenesis prevents heart formation. At which level of the developmental cascade would you expect this intervention to have its primary effect?",
+                    options: [
+                        { text: "Preventing heart tube looping", correct: false },
+                        { text: "Blocking NKX2.5 gene activation", correct: true },
+                        { text: "Inhibiting endocardial cushion formation", correct: false },
+                        { text: "Preventing neural crest cell migration", correct: false },
+                        { text: "Blocking aortic arch development", correct: false }
+                    ],
+                    explanation: "BMP 2,4 proteins induce NKX2.5 gene expression, which is the master regulatory gene for cardiac development. Inhibiting BMP 2,4 would prevent NKX2.5 activation, thereby blocking the entire cardiac developmental program at its most upstream level. Heart tube looping, endocardial cushion formation, neural crest cell migration, and aortic arch development are all downstream events that depend on the initial NKX2.5-mediated cardiac program. This represents the most fundamental level of intervention in cardiac development."
+                },
+                {
+                    question: "A patient with complex congenital heart disease requires surgical repair. Understanding that the coronary sinus develops from the left horn of the sinus venosus, what surgical consideration would be most important when operating near this structure?",
+                    options: [
+                        { text: "Risk of damaging the conducting system", correct: false },
+                        { text: "Potential for massive hemorrhage", correct: false },
+                        { text: "Risk of air embolism", correct: false },
+                        { text: "Anatomical variation in coronary venous drainage", correct: true },
+                        { text: "Risk of damaging the mitral valve", correct: false }
+                    ],
+                    explanation: "The coronary sinus, developing from the left horn of the sinus venosus, drains the cardiac venous system. Understanding its developmental origin is crucial because developmental variations can lead to anomalous coronary venous drainage patterns (such as persistent left superior vena cava draining to coronary sinus). While the conducting system is nearby, the question specifically relates to sinus venosus derivatives. Hemorrhage risk exists but isn't specific to developmental considerations. Air embolism and mitral valve damage are not directly related to coronary sinus developmental anatomy."
+                },
+                {
+                    question: "A geneticist is counseling parents whose child has multiple cardiac defects including VSD, outflow tract abnormalities, and abnormal aortic arch development. Based on developmental biology principles, what type of genetic defect would most likely explain this constellation of findings?",
+                    options: [
+                        { text: "Single gene mutation affecting myocardial contractility", correct: false },
+                        { text: "Chromosomal deletion affecting neural crest cell development", correct: true },
+                        { text: "Mutation affecting endocardial cushion formation only", correct: false },
+                        { text: "Defect in cardiac looping genes", correct: false },
+                        { text: "Mutation affecting venous development", correct: false }
+                    ],
+                    explanation: "The combination of VSD, outflow tract abnormalities, and aortic arch defects suggests a problem with neural crest cell development, as these cells contribute to outflow tract septation, semilunar valve formation, and aortic arch remodeling. Chromosomal deletions affecting neural crest development (such as 22q11.2 deletion syndrome) commonly cause this constellation of defects. Single gene mutations affecting contractility wouldn't cause structural defects. Endocardial cushion defects primarily affect AV structures. Cardiac looping defects affect positioning. Venous development defects wouldn't explain the arterial and septal abnormalities described."
+                }
+            ];
+
+            const quizContainer = document.getElementById('quiz-container');
+
+            // --- FUNCTIONS ---
+
+            /**
+             * Shuffles an array in place using the Fisher-Yates (aka Knuth) Shuffle algorithm.
+             * @param {Array} array The array to be shuffled.
+             */
+            function shuffleArray(array) {
+                for (let i = array.length - 1; i > 0; i--) {
+                    const j = Math.floor(Math.random() * (i + 1));
+                    [array[i], array[j]] = [array[j], array[i]]; // ES6 destructuring swap
+                }
+            }
+
+            /**
+             * Renders the entire quiz, shuffling options for each question.
+             */
+            function renderQuiz() {
+                // Clear any existing content
+                quizContainer.innerHTML = '';
+
+                // Iterate over each question in the data
+                quizData.forEach((item, index) => {
+                    // Shuffle the options for the current question
+                    shuffleArray(item.options);
+
+                    // Create the HTML for the answer options
+                    const optionsHtml = item.options.map(option => `
+                        <li class="answer-option border border-gray-300 rounded-lg p-3 text-left w-full hover:bg-gray-100 focus-within:ring-2 focus-within:ring-blue-500 transition-colors duration-150 cursor-pointer">
+                            ${option.text}
+                        </li>
+                    `).join('');
+
+                    // Create the full HTML for the question card
+                    const questionCard = `
+                        <div class="question-card bg-white p-6 rounded-xl shadow-md border border-gray-200" data-question-index="${index}">
+                            <h2 class="text-lg font-semibold text-gray-800 mb-4">Question ${index + 1}: ${item.question}</h2>
+                            <ul class="options-list space-y-3 mb-4">
+                                ${optionsHtml}
+                            </ul>
+                            <button class="toggle-explanation-btn bg-blue-600 text-white font-semibold py-2 px-4 rounded-lg hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-all">
+                                Show Explanation
+                            </button>
+                            <div class="explanation bg-blue-50 border-l-4 border-blue-400 text-blue-800 p-4 mt-4 rounded-r-lg hidden">
+                                <p class="font-semibold mb-2">Explanation:</p>
+                                <p>${item.explanation}</p>
+                            </div>
+                        </div>
+                    `;
+                    
+                    // Add the question card to the container
+                    quizContainer.innerHTML += questionCard;
+                });
+            }
+
+            // --- EVENT LISTENERS ---
+
+            // Use event delegation to handle clicks on the buttons
+            quizContainer.addEventListener('click', function(event) {
+                const target = event.target;
+
+                // Check if a 'Show Explanation' button was clicked
+                if (target.classList.contains('toggle-explanation-btn')) {
+                    const questionCard = target.closest('.question-card');
+                    if (!questionCard) return;
+
+                    const explanationDiv = questionCard.querySelector('.explanation');
+                    const optionsList = questionCard.querySelector('.options-list');
+                    const questionIndex = parseInt(questionCard.dataset.questionIndex, 10);
+                    const originalQuestionData = quizData[questionIndex];
+                    
+                    // Toggle visibility of the explanation
+                    const isHidden = explanationDiv.classList.toggle('hidden');
+                    target.textContent = isHidden ? 'Show Explanation' : 'Hide Explanation';
+
+                    // If showing explanation, highlight the correct answer
+                    if (!isHidden) {
+                        const answerElements = optionsList.querySelectorAll('.answer-option');
+                        answerElements.forEach((optionEl, optionIndex) => {
+                            // Find the corresponding option data from the shuffled array
+                            const optionData = originalQuestionData.options.find(opt => opt.text === optionEl.textContent.trim());
+                            if (optionData && optionData.correct) {
+                                optionEl.classList.remove('bg-gray-100', 'border-gray-300');
+                                optionEl.classList.add('bg-green-100', 'border-green-500', 'ring-2', 'ring-green-500', 'font-semibold');
+                            }
+                        });
+                    } else {
+                        // If hiding, remove highlights
+                        const answerElements = optionsList.querySelectorAll('.answer-option');
+                        answerElements.forEach(optionEl => {
+                            optionEl.classList.remove('bg-green-100', 'border-green-500', 'ring-2', 'ring-green-500', 'font-semibold');
+                            optionEl.classList.add('border-gray-300');
+                        });
+                    }
+                }
+            });
+
+            // --- INITIALIZATION ---
+            renderQuiz();
+        });
+    </script>
+
+</body>
+</html>

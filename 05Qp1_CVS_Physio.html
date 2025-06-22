@@ -1,0 +1,461 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cardiac Physiology USMLE-Style Quiz</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+        .correct-answer {
+            background-color: #d1fae5; /* Tailwind green-100 */
+            border-left: 4px solid #10b981; /* Tailwind green-500 */
+        }
+        .incorrect-answer {
+            background-color: #fee2e2; /* Tailwind red-100 */
+            border-left: 4px solid #ef4444; /* Tailwind red-500 */
+        }
+        .explanation {
+            display: none;
+            margin-top: 1rem;
+            padding: 1rem;
+            background-color: #f3f4f6; /* Tailwind gray-100 */
+            border-radius: 0.5rem;
+            border: 1px solid #d1d5db; /* Tailwind gray-300 */
+        }
+    </style>
+</head>
+<body class="bg-gray-50 text-gray-800">
+
+    <div class="container mx-auto p-4 sm:p-6 md:p-8 max-w-4xl">
+
+        <header class="text-center mb-8">
+            <h1 class="text-3xl sm:text-4xl font-bold text-gray-900">Cardiac Physiology Quiz</h1>
+            <p class="text-md text-gray-600 mt-2">USMLE-Style Multiple Choice Questions</p>
+        </header>
+
+        <div id="quiz-container" class="space-y-8">
+            <!-- Questions will be dynamically inserted here -->
+        </div>
+
+        <div class="mt-10 text-center">
+            <button id="submit-btn" class="bg-blue-600 text-white font-bold py-3 px-8 rounded-lg shadow-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50 transition-transform transform hover:scale-105">
+                Submit & See Score
+            </button>
+        </div>
+
+        <div id="score-container" class="mt-8 p-6 bg-white rounded-xl shadow-lg text-center" style="display: none;">
+            <h2 class="text-2xl font-bold text-gray-800">Quiz Results</h2>
+            <p id="score-text" class="text-lg mt-2"></p>
+            <div class="w-full bg-gray-200 rounded-full h-4 mt-4">
+                <div id="score-bar" class="bg-green-500 h-4 rounded-full" style="width: 0%;"></div>
+            </div>
+        </div>
+        
+        <footer class="mt-12 text-center text-xs text-gray-500">
+            <p>Disclaimer: This file was created by Ktp, with assistance from AI tools (e.g., ChatGPT, Gemini, Claude, and Perplexity) for content generation and editing. Please double-check all information for accuracy and reliability.</p>
+        </footer>
+
+    </div>
+
+    <script>
+        // --- DATA ---
+        // Storing all quiz data in a structured array of objects.
+        const quizData = [
+            {
+                question: "Which of the following is the primary pacemaker of the heart?",
+                options: {
+                    "AV node": false,
+                    "Bundle of His": false,
+                    "Purkinje fibers": false,
+                    "SA node": true,
+                    "Left bundle branch": false
+                },
+                explanation: "The SA node is located in the upper right atrium and serves as the primary pacemaker, generating 70-80 action potentials per minute at rest. The AV node is a secondary pacemaker (40-60/min), while the Bundle of His and Purkinje fibers have even slower intrinsic rates (20-40/min) and are not life-sustaining as primary pacemakers. The left bundle branch is part of the conduction system but not a pacemaker."
+            },
+            {
+                question: "What is the normal stroke volume in a healthy adult?",
+                options: {
+                    "35 mL": false,
+                    "50 mL": false,
+                    "70 mL": true,
+                    "95 mL": false,
+                    "135 mL": false
+                },
+                explanation: "Normal stroke volume is approximately 70 mL, calculated as EDV (135 mL) minus ESV (65 mL). 35 mL and 50 mL are too low for normal cardiac function. 95 mL would represent an unusually high stroke volume. 135 mL represents the end-diastolic volume, not stroke volume."
+            },
+            {
+                question: "During which phase of the cardiac cycle do the atrioventricular valves close?",
+                options: {
+                    "Early ventricular diastole": false,
+                    "Late ventricular diastole": false,
+                    "Mid ventricular diastole": false,
+                    "Early ventricular systole": true,
+                    "Late ventricular systole": false
+                },
+                explanation: "The AV valves close at the beginning of ventricular systole (early systole) when ventricular pressure exceeds atrial pressure, creating the 'Lub' sound (S1). During diastole, the AV valves are open to allow ventricular filling. Late systole involves ejection through open semilunar valves."
+            },
+            {
+                question: "The resting membrane potential of ventricular myocytes is approximately -90 mV primarily due to:",
+                options: {
+                    "High extracellular sodium concentration": false,
+                    "High intracellular potassium concentration": true,
+                    "Calcium channel activity": false,
+                    "Sodium-potassium pump activity": false,
+                    "High extracellular calcium concentration": false
+                },
+                explanation: "The resting potential of -90 mV is primarily determined by high intracellular K+ concentration, making the membrane highly permeable to K+ at rest. While the Na+/K+ pump establishes concentration gradients, the resting potential itself reflects K+ permeability. High extracellular Na+ and Ca2+ concentrations don't directly determine resting potential. Calcium channels are not primarily active at rest."
+            },
+            {
+                question: "What prevents the atrioventricular valves from everting into the atria during ventricular contraction?",
+                options: {
+                    "Semilunar valve closure": false,
+                    "Atrial contraction": false,
+                    "Chordae tendineae and papillary muscles": true,
+                    "High atrial pressure": false,
+                    "Ventricular relaxation": false
+                },
+                explanation: "The chordae tendineae and papillary muscles provide structural support to prevent AV valve eversion during the high pressures of ventricular systole. Semilunar valve closure occurs later in the cycle. Atrial contraction occurs during diastole. High atrial pressure would actually worsen eversion tendency. Ventricular relaxation doesn't occur during systole when eversion risk is highest."
+            },
+            {
+                question: "The plateau phase (Phase 2) of the ventricular action potential is primarily maintained by:",
+                options: {
+                    "Sodium influx through voltage-gated channels": false,
+                    "Potassium efflux through delayed rectifier channels": false,
+                    "Balance between calcium influx and potassium efflux": true,
+                    "Chloride influx through ligand-gated channels": false,
+                    "Sodium-potassium pump activity": false
+                },
+                explanation: "Phase 2 plateau is maintained by a delicate balance between L-type calcium influx (ICaL) and potassium efflux (IKr/IKs). Voltage-gated sodium channels are inactivated after Phase 0. Pure potassium efflux would cause repolarization, not a plateau. Chloride channels don't significantly contribute to the plateau. The Na+/K+ pump doesn't directly maintain the plateau phase."
+            },
+            {
+                question: "A patient's ECG shows a heart rate of 70 bpm with a normal stroke volume of 70 mL. What is their cardiac output?",
+                options: {
+                    "3.5 L/min": false,
+                    "4.2 L/min": false,
+                    "4.9 L/min": true,
+                    "5.6 L/min": false,
+                    "6.3 L/min": false
+                },
+                explanation: "Cardiac output = Stroke Volume × Heart Rate = 70 mL × 70 bpm = 4,900 mL/min = 4.9 L/min. This represents a normal cardiac output. The other values result from incorrect calculations or using wrong heart rate/stroke volume combinations."
+            },
+            {
+                question: "Which mechanism allows the heart to automatically increase stroke volume in response to increased venous return?",
+                options: {
+                    "Sympathetic nervous system activation": false,
+                    "Frank-Starling mechanism": true,
+                    "Parasympathetic withdrawal": false,
+                    "Increased heart rate": false,
+                    "Baroreceptor reflex": false
+                },
+                explanation: "The Frank-Starling mechanism is an intrinsic property where increased venous return leads to optimal sarcomere length and maximum crossbridge formation, automatically increasing stroke volume without external neural control. Sympathetic activation and parasympathetic withdrawal are external controls. Increased heart rate affects cardiac output but not stroke volume directly. Baroreceptor reflex involves external neural control."
+            },
+            {
+                question: "During sympathetic stimulation of the heart, which effect occurs at the AV node?",
+                options: {
+                    "Increased conduction delay": false,
+                    "Decreased excitability": false,
+                    "Negative dromotropy": false,
+                    "Decreased conduction velocity": false,
+                    "Positive dromotropy": true
+                },
+                explanation: "Sympathetic stimulation causes positive dromotropy (decreased AV delay and increased conduction velocity) through β1-adrenergic receptors. This enhances AV nodal excitability and speeds conduction. Increased delay, decreased excitability, negative dromotropy, and decreased conduction velocity are all effects of parasympathetic stimulation."
+            },
+            {
+                question: "The dicrotic notch seen in arterial pressure tracings corresponds to which cardiac event?",
+                options: {
+                    "Atrioventricular valve opening": false,
+                    "Atrioventricular valve closure": false,
+                    "Semilunar valve opening": false,
+                    "Semilunar valve closure": true,
+                    "Atrial contraction": false
+                },
+                explanation: "The dicrotic notch is a pressure artifact caused by aortic valve (semilunar valve) closure during early ventricular diastole. This creates a brief pressure increase as the valve snaps shut. AV valve events don't directly affect arterial pressure. Semilunar valve opening is gradual and doesn't create a notch. Atrial contraction affects venous, not arterial pressure patterns."
+            },
+            {
+                question: "A patient with heart failure has an end-diastolic volume of 180 mL and an end-systolic volume of 130 mL. What is their ejection fraction?",
+                options: {
+                    "22%": false,
+                    "28%": true,
+                    "35%": false,
+                    "42%": false,
+                    "50%": false
+                },
+                explanation: "Ejection fraction = (EDV - ESV)/EDV × 100% = (180 - 130)/180 × 100% = 50/180 × 100% = 28%. This represents significantly reduced ejection fraction (normal >55%), consistent with heart failure. The other percentages result from incorrect calculations or formulas."
+            },
+            {
+                question: "A research study measures action potential duration in different cardiac tissues. Which tissue would be expected to have the longest action potential duration?",
+                options: {
+                    "SA node pacemaker cells": false,
+                    "AV node pacemaker cells": false,
+                    "Atrial muscle cells": false,
+                    "Ventricular muscle cells": true,
+                    "Purkinje fiber cells": false
+                },
+                explanation: "Ventricular muscle cells have the longest action potential duration (~300 ms) due to their prominent plateau phase, which is essential for coordinated contraction and preventing tetany. SA and AV node cells have shorter action potentials without true plateaus. Atrial muscle has shorter action potentials than ventricular muscle. Purkinje fibers have long action potentials but typically shorter than ventricular muscle."
+            },
+            {
+                question: "A patient receives a β1-adrenergic agonist. Which combination of effects would be expected?",
+                options: {
+                    "Increased heart rate, decreased contractility, increased AV conduction": false,
+                    "Decreased heart rate, increased contractility, decreased AV conduction": false,
+                    "Increased heart rate, increased contractility, increased AV conduction": true,
+                    "Decreased heart rate, decreased contractility, increased AV conduction": false,
+                    "Increased heart rate, increased contractility, decreased AV conduction": false
+                },
+                explanation: "β1-adrenergic stimulation produces positive chronotropy (increased heart rate), positive inotropy (increased contractility), and positive dromotropy (increased AV conduction/decreased AV delay). This represents the classic 'fight or flight' cardiac response. All other combinations contain at least one incorrect effect."
+            },
+            {
+                question: "Why does cardiac muscle have an absolute refractory period of approximately 250 ms?",
+                options: {
+                    "To allow complete calcium reuptake by the sarcoplasmic reticulum": false,
+                    "To prevent tetanic contractions and ensure proper filling": true,
+                    "To synchronize atrial and ventricular contractions": false,
+                    "To allow the Frank-Starling mechanism to operate": false,
+                    "To maintain constant heart rate": false
+                },
+                explanation: "The long absolute refractory period (250 ms) prevents tetanic contractions by ensuring sodium channels remain inactivated, allowing proper diastolic filling and ejection cycles. While calcium handling is important, it doesn't determine the refractory period length. The refractory period doesn't directly synchronize chambers or enable Frank-Starling mechanism. It doesn't maintain constant heart rate."
+            },
+            {
+                question: "In pacemaker cells, the 'funny current' (If) is primarily responsible for:",
+                options: {
+                    "The rapid upstroke of the action potential": false,
+                    "The repolarization phase": false,
+                    "The plateau phase maintenance": false,
+                    "The slow diastolic depolarization": true,
+                    "The hyperpolarization following repolarization": false
+                },
+                explanation: "The funny current (If) is a mixed Na+/K+ current that activates during hyperpolarization and is responsible for the slow diastolic depolarization (pacemaker potential) that drives spontaneous firing. The rapid upstroke is due to L-type Ca2+ channels in pacemaker cells. Repolarization involves K+ efflux. There's no plateau phase in pacemaker cells. Hyperpolarization doesn't occur in pacemaker cells."
+            },
+            {
+                question: "A patient's cardiac catheterization reveals the following pressures during systole: Right ventricle = 25 mmHg, Left ventricle = 120 mmHg, Pulmonary artery = 25 mmHg, Aorta = 120 mmHg. What can be concluded?",
+                options: {
+                    "The patient has pulmonary valve stenosis": false,
+                    "The patient has aortic valve stenosis": false,
+                    "The patient has normal semilunar valve function": true,
+                    "The patient has tricuspid valve regurgitation": false,
+                    "The patient has mitral valve regurgitation": false
+                },
+                explanation: "Normal semilunar valve function is indicated because ventricular and arterial pressures are equal during systole (RV = PA = 25 mmHg; LV = Aorta = 120 mmHg). If valve stenosis were present, ventricular pressure would exceed arterial pressure. AV valve regurgitation would affect diastolic pressures and atrial pressures, not the ventricular-arterial pressure relationship during systole."
+            },
+            {
+                question: "A patient with atrial fibrillation loses the 'atrial kick' component of ventricular filling. This would most significantly affect:",
+                options: {
+                    "The isovolumetric contraction phase": false,
+                    "The early rapid filling phase": false,
+                    "The late diastolic filling phase": true,
+                    "The isovolumetric relaxation phase": false,
+                    "The ejection phase": false
+                },
+                explanation: "The 'atrial kick' refers to late diastolic filling when atrial contraction actively pushes blood into the ventricles, contributing about 20-30% of ventricular filling. This occurs during late diastole, not during early rapid filling (passive), isovolumetric phases (no filling), or ejection phase (emptying)."
+            },
+            {
+                question: "A patient's ventricular muscle shows increased intracellular calcium availability. According to the Frank-Starling mechanism, this would:",
+                options: {
+                    "Shift the Frank-Starling curve upward and leftward": true,
+                    "Shift the Frank-Starling curve downward and rightward": false,
+                    "Shift the Frank-Starling curve upward without changing its slope": false,
+                    "Change only the slope of the Frank-Starling curve": false,
+                    "Have no effect on the Frank-Starling relationship": false
+                },
+                explanation: "Increased intracellular calcium availability increases contractility (positive inotropy), which shifts the entire Frank-Starling curve upward and leftward - meaning greater stroke volume at any given preload, and the same stroke volume achieved at lower filling pressures. The curve doesn't just move up (preserving the relationship with preload) or change slope only."
+            },
+            {
+                question: "A patient presents with a heart rate of 45 bpm and blood pressure of 90/60 mmHg. The ECG shows a normal P-wave morphology with a consistent PR interval, but the ventricular rate is exactly half the atrial rate. The most likely explanation is:",
+                options: {
+                    "SA node dysfunction with AV node escape rhythm": false,
+                    "Complete heart block with junctional escape rhythm": false,
+                    "2:1 AV block with normal SA node function": true,
+                    "Atrial flutter with variable AV conduction": false,
+                    "Sinus bradycardia with first-degree AV block": false
+                },
+                explanation: "2:1 AV block presents with normal P-waves (normal SA node) but every other P-wave fails to conduct to the ventricles, resulting in a ventricular rate exactly half the atrial rate with consistent PR intervals for conducted beats. SA node dysfunction wouldn't show normal P-waves. Complete heart block would show no relationship between P-waves and QRS. Atrial flutter has abnormal P-wave morphology. Sinus bradycardia would have 1:1 AV conduction."
+            },
+            {
+                question: "A patient with heart failure is started on a medication that blocks L-type calcium channels in cardiac muscle. Considering the integrated cardiovascular physiology, what would be the most concerning potential consequence?",
+                options: {
+                    "Increased risk of arrhythmias due to shortened action potential": false,
+                    "Decreased contractility leading to further reduction in cardiac output": true,
+                    "Increased heart rate due to enhanced SA node automaticity": false,
+                    "Improved diastolic filling due to enhanced ventricular relaxation": false,
+                    "Increased stroke volume due to enhanced Frank-Starling mechanism": false
+                },
+                explanation: "Blocking L-type calcium channels would decrease calcium influx, reducing contractility (negative inotropy) and potentially worsening heart failure by further reducing cardiac output. This is the primary concern. L-type channel blockade doesn't typically cause arrhythmias or shorten action potentials significantly. It would decrease, not increase, SA node automaticity and heart rate. While it might improve diastolic relaxation, the negative inotropic effect is the dominant and concerning consequence. The Frank-Starling mechanism wouldn't be enhanced by reduced contractility."
+            }
+        ];
+
+
+        // --- LOGIC ---
+        document.addEventListener('DOMContentLoaded', () => {
+            const quizContainer = document.getElementById('quiz-container');
+            const submitBtn = document.getElementById('submit-btn');
+
+            /**
+             * Shuffles an array of options in place using the Fisher-Yates algorithm.
+             * @param {Array<string>} array - The array of strings (options) to shuffle.
+             */
+            function shuffleOptions(array) {
+                for (let i = array.length - 1; i > 0; i--) {
+                    const j = Math.floor(Math.random() * (i + 1));
+                    [array[i], array[j]] = [array[j], array[i]];
+                }
+            }
+
+            /**
+             * Renders the entire quiz, creating HTML elements for each question.
+             */
+            function renderQuiz() {
+                quizContainer.innerHTML = ''; // Clear previous content
+                quizData.forEach((qData, index) => {
+                    // Create the main container for the question
+                    const questionBlock = document.createElement('div');
+                    questionBlock.className = 'p-6 bg-white rounded-xl shadow-lg';
+                    questionBlock.id = `question-${index}`;
+
+                    // Add the question text
+                    const questionText = document.createElement('p');
+                    questionText.className = 'text-lg font-semibold text-gray-900';
+                    questionText.textContent = `${index + 1}. ${qData.question}`;
+                    questionBlock.appendChild(questionText);
+
+                    // Create the list for options
+                    const optionsList = document.createElement('div');
+                    optionsList.className = 'mt-4 space-y-3';
+                    
+                    // Shuffle the options before rendering
+                    const options = Object.keys(qData.options);
+                    shuffleOptions(options);
+
+                    options.forEach(optionText => {
+                        const optionLabel = document.createElement('label');
+                        optionLabel.className = 'flex items-center p-3 border border-gray-200 rounded-lg hover:bg-gray-100 cursor-pointer transition-colors';
+                        
+                        const radioButton = document.createElement('input');
+                        radioButton.type = 'radio';
+                        radioButton.name = `question-${index}`;
+                        radioButton.value = optionText;
+                        radioButton.className = 'h-4 w-4 text-blue-600 border-gray-300 focus:ring-blue-500';
+
+                        const optionSpan = document.createElement('span');
+                        optionSpan.className = 'ml-3 text-gray-700';
+                        optionSpan.textContent = optionText;
+
+                        optionLabel.appendChild(radioButton);
+                        optionLabel.appendChild(optionSpan);
+                        optionsList.appendChild(optionLabel);
+                    });
+
+                    questionBlock.appendChild(optionsList);
+
+                    // Create the "Show Explanation" button
+                    const explanationBtn = document.createElement('button');
+                    explanationBtn.textContent = 'Show Explanation';
+                    explanationBtn.className = 'mt-4 text-sm font-medium text-blue-600 hover:text-blue-800';
+                    explanationBtn.dataset.questionIndex = index;
+                    questionBlock.appendChild(explanationBtn);
+
+                    // Create the explanation container (initially hidden)
+                    const explanationDiv = document.createElement('div');
+                    explanationDiv.className = 'explanation';
+                    explanationDiv.id = `explanation-${index}`;
+                    explanationDiv.innerHTML = `<strong class="font-semibold">Explanation:</strong> ${qData.explanation}`;
+                    questionBlock.appendChild(explanationDiv);
+
+                    quizContainer.appendChild(questionBlock);
+                });
+                
+                // Add event listeners after rendering
+                addExplanationListeners();
+            }
+
+            /**
+             * Handles the logic for checking an answer and showing the explanation.
+             * @param {number} index - The index of the question to check.
+             */
+            function checkAnswer(index) {
+                const qData = quizData[index];
+                const questionBlock = document.getElementById(`question-${index}`);
+                const radioButtons = questionBlock.querySelectorAll(`input[name="question-${index}"]`);
+                const explanationDiv = document.getElementById(`explanation-${index}`);
+                
+                let selectedOption = null;
+
+                radioButtons.forEach(radio => {
+                    const label = radio.parentElement;
+                    const optionValue = radio.value;
+                    const isCorrect = qData.options[optionValue];
+
+                    if (radio.checked) {
+                        selectedOption = radio;
+                        label.classList.add(isCorrect ? 'correct-answer' : 'incorrect-answer');
+                    }
+                    
+                    // Highlight the correct answer regardless of user choice
+                    if (isCorrect) {
+                        if (!label.classList.contains('correct-answer')) {
+                           label.classList.add('correct-answer');
+                        }
+                    }
+                    
+                    radio.disabled = true; // Disable radios after checking
+                });
+
+                explanationDiv.style.display = 'block';
+            }
+            
+            /**
+             * Adds click listeners to all "Show Explanation" buttons.
+             */
+            function addExplanationListeners() {
+                document.querySelectorAll('button[data-question-index]').forEach(button => {
+                    button.addEventListener('click', (e) => {
+                        const index = e.target.dataset.questionIndex;
+                        checkAnswer(index);
+                    });
+                });
+            }
+
+            /**
+             * Handles the final submission of the quiz.
+             */
+            submitBtn.addEventListener('click', () => {
+                let correctCount = 0;
+                let answeredCount = 0;
+
+                quizData.forEach((qData, index) => {
+                    const selectedRadio = document.querySelector(`input[name="question-${index}"]:checked`);
+                    
+                    // Run the check to show all explanations and colors
+                    checkAnswer(index);
+
+                    if (selectedRadio) {
+                        answeredCount++;
+                        if (qData.options[selectedRadio.value]) {
+                            correctCount++;
+                        }
+                    }
+                });
+                
+                const score = (correctCount / quizData.length) * 100;
+                const scoreContainer = document.getElementById('score-container');
+                const scoreText = document.getElementById('score-text');
+                const scoreBar = document.getElementById('score-bar');
+
+                scoreText.textContent = `You scored ${correctCount} out of ${quizData.length} (${score.toFixed(1)}%)`;
+                scoreBar.style.width = `${score}%`;
+                scoreContainer.style.display = 'block';
+                
+                // Scroll to the results
+                scoreContainer.scrollIntoView({ behavior: 'smooth' });
+            });
+
+            // Initial render of the quiz on page load
+            renderQuiz();
+        });
+    </script>
+
+</body>
+</html>

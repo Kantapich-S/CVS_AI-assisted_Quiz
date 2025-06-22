@@ -1,0 +1,357 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>USMLE-Style Quiz: CVS Physiology</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        /* A little extra style for better readability and feel */
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+        .explanation {
+            border-left: 4px solid #3b82f6; /* blue-500 */
+        }
+        .correct-answer {
+            background-color: #dcfce7 !important; /* green-100 */
+            border-color: #22c55e !important; /* green-500 */
+            font-weight: 600;
+        }
+    </style>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body class="bg-gray-100 text-gray-800">
+
+    <div class="container mx-auto p-4 sm:p-6 md:p-8">
+        <header class="text-center mb-8">
+            <h1 class="text-3xl sm:text-4xl font-bold text-gray-900">USMLE-Style Quiz</h1>
+            <p class="text-lg text-gray-600 mt-2">Cardiovascular Physiology: Regional Circulation & Microcirculation</p>
+        </header>
+
+        <main id="quiz-container">
+            <!-- Questions will be dynamically inserted here by JavaScript -->
+        </main>
+
+        <footer class="mt-12 text-center text-xs text-gray-500">
+            <p>Disclaimer: This file was created by Ktp, with assistance from AI tools (e.g., ChatGPT, Gemini, Claude, and Perplexity) for content generation and editing. Please double-check all information for accuracy and reliability.</p>
+        </footer>
+    </div>
+
+    <script>
+    // --- Data for the Quiz ---
+    const quizData = [
+        {
+            question: "The fundamental relationship between flow (Q), pressure (P), and resistance (R) in cardiovascular physiology is described by which equation?",
+            options: [
+                { text: "Q = P × R", correct: false },
+                { text: "Q = P/R", correct: true },
+                { text: "Q = R/P", correct: false },
+                { text: "P = Q × R²", correct: false },
+                { text: "R = P × Q", correct: false }
+            ],
+            explanation: "The fundamental hemodynamic relationship is based on Ohm's Law applied to circulation, where flow equals pressure divided by resistance. This basic principle underlies all cardiovascular physiology. Option A incorrectly multiplies pressure and resistance. Option C inverts the correct relationship. Option D incorrectly squares resistance. Option E rearranges the variables incorrectly."
+        },
+        {
+            question: "Which phase of the cardiac cycle is most important for coronary blood flow?",
+            options: [
+                { text: "Isovolumetric contraction", correct: false },
+                { text: "Ventricular ejection", correct: false },
+                { text: "Isovolumetric relaxation", correct: false },
+                { text: "Diastole", correct: true },
+                { text: "Atrial systole", correct: false }
+            ],
+            explanation: "Coronary blood flow occurs predominantly during diastole when myocardial compression is minimal, allowing maximal perfusion of the coronary arteries. During systole (options A and B), myocardial contraction compresses coronary vessels, reducing flow. Isovolumetric relaxation (C) is a brief phase. Atrial systole (E) contributes minimally to coronary perfusion."
+        },
+        {
+            question: "The primary endothelium-derived vasodilator that causes vascular smooth muscle cell relaxation is:",
+            options: [
+                { text: "Endothelin", correct: false },
+                { text: "Angiotensin II", correct: false },
+                { text: "Vasopressin", correct: false },
+                { text: "Nitric oxide (NO)", correct: true },
+                { text: "Norepinephrine", correct: false }
+            ],
+            explanation: "Nitric oxide is the primary endothelium-derived vasodilator that diffuses into smooth muscle cells and causes relaxation, reducing vascular tone. Endothelin (A) is actually a powerful vasoconstrictor. Angiotensin II (B) and vasopressin (C) are hormonal vasoconstrictors. Norepinephrine (E) is a neurotransmitter that typically causes vasoconstriction."
+        },
+        {
+            question: "In the Starling forces governing capillary fluid exchange, net filtration primarily occurs at which location?",
+            options: [
+                { text: "Venous end of capillaries", correct: false },
+                { text: "Arterial end of capillaries", correct: true },
+                { text: "Mid-capillary region", correct: false },
+                { text: "Postcapillary venules", correct: false },
+                { text: "Precapillary sphincters", correct: false }
+            ],
+            explanation: "According to Starling forces, net filtration predominates at the arterial end of capillaries where hydrostatic pressure is highest. At the venous end (A), net reabsorption occurs due to lower hydrostatic pressure and maintained oncotic pressure. The mid-capillary region (C) represents a transition zone. Postcapillary venules (D) and precapillary sphincters (E) have different primary functions."
+        },
+        {
+            question: "Autoregulation of blood flow refers to the ability of tissues to:",
+            options: [
+                { text: "Increase blood flow in response to sympathetic stimulation", correct: false },
+                { text: "Decrease blood flow when metabolic demands are low", correct: false },
+                { text: "Maintain constant blood flow despite pressure changes", correct: true },
+                { text: "Redirect blood flow away from inactive tissues", correct: false },
+                { text: "Respond to circulating vasoactive hormones", correct: false }
+            ],
+            explanation: "Autoregulation is the intrinsic ability of tissues to maintain constant blood flow despite changes in perfusion pressure, protecting organs from pressure fluctuations. Options A and E describe extrinsic control mechanisms. Option B describes metabolic regulation but not autoregulation specifically. Option D describes flow redistribution, not autoregulation."
+        },
+        {
+            question: "Which second messenger system generally promotes vasodilation in vascular smooth muscle cells?",
+            options: [
+                { text: "Intracellular Ca²⁺ increase", correct: false },
+                { text: "Protein kinase C activation", correct: false },
+                { text: "Cyclic AMP (cAMP) increase", correct: true },
+                { text: "Inositol triphosphate (IP₃) increase", correct: false },
+                { text: "Diacylglycerol (DAG) increase", correct: false }
+            ],
+            explanation: "Cyclic AMP generally promotes vasodilation by activating protein kinase A and reducing intracellular calcium sensitivity in vascular smooth muscle cells. Increased intracellular Ca²⁺ (A) is the primary mediator of vasoconstriction. Protein kinase C (B), IP₃ (D), and DAG (E) are typically associated with vasoconstriction pathways."
+        },
+        {
+            question: "A patient with severe aortic regurgitation would be most likely to develop coronary ischemia due to:",
+            options: [
+                { text: "Increased systolic pressure compressing coronary arteries", correct: false },
+                { text: "Decreased diastolic pressure reducing coronary perfusion", correct: true },
+                { text: "Increased heart rate reducing diastolic filling time", correct: false },
+                { text: "Elevated left ventricular end-diastolic pressure", correct: false },
+                { text: "Reduced coronary vascular resistance", correct: false }
+            ],
+            explanation: "Aortic regurgitation causes decreased diastolic pressure as blood regurgitates back into the left ventricle. Since coronary flow is predominantly diastolic and depends on diastolic pressure, this creates a risk for coronary ischemia. Increased systolic pressure (A) would not directly affect coronary flow. Increased heart rate (C) may occur but is secondary. Elevated LVEDP (D) is a consequence, not the primary mechanism. Reduced coronary resistance (E) would actually improve flow."
+        },
+        {
+            question: "In metabolic control of regional blood flow, which combination of factors would produce the strongest vasodilatory response?",
+            options: [
+                { text: "Increased PO₂, decreased PCO₂, increased pH", correct: false },
+                { text: "Decreased PO₂, increased PCO₂, decreased pH", correct: true },
+                { text: "Normal PO₂, decreased PCO₂, normal pH", correct: false },
+                { text: "Increased PO₂, normal PCO₂, increased pH", correct: false },
+                { text: "Normal PO₂, increased PCO₂, increased pH", correct: false }
+            ],
+            explanation: "The strongest vasodilatory response occurs with decreased PO₂ (hypoxia), increased PCO₂ (hypercapnia), and decreased pH (acidosis) - conditions indicating high metabolic demand and tissue hypoxia. Option A represents the opposite conditions that would promote vasoconstriction. Options C, D, and E represent mixed or normal conditions that would not produce maximal vasodilation."
+        },
+        {
+            question: "Myogenic autoregulation in vascular smooth muscle cells primarily involves:",
+            options: [
+                { text: "Metabolite-induced changes in vessel diameter", correct: false },
+                { text: "Neural reflexes responding to pressure changes", correct: false },
+                { text: "Stretch-activated channels causing membrane depolarization", correct: true },
+                { text: "Hormonal responses to blood pressure variations", correct: false },
+                { text: "Endothelial release of vasoactive substances", correct: false }
+            ],
+            explanation: "Myogenic autoregulation involves stretch-sensitive channels in vascular smooth muscle cell membranes that activate when vessels are stretched by increased pressure, leading to depolarization and vasoconstriction. This is an intrinsic property of the muscle cells themselves. Options A, B, D, and E describe other regulatory mechanisms (metabolic, neural, hormonal, and endothelial control respectively) but not myogenic autoregulation."
+        },
+        {
+            question: "The splanchnic circulation is characterized by all of the following EXCEPT:",
+            options: [
+                { text: "Arteriolar control as the primary resistance mechanism", correct: false },
+                { text: "Sinusoidal networks in liver and spleen", correct: false },
+                { text: "High oxygen extraction ratio compared to other organs", correct: true },
+                { text: "Significant capacity for blood flow redistribution", correct: false },
+                { text: "Specialized microvascular structures for filtration", correct: false }
+            ],
+            explanation: "The splanchnic circulation actually has a relatively low oxygen extraction ratio because it receives a large proportion of cardiac output for its metabolic needs. All other options are correct characteristics: arteriolar control provides resistance regulation (A), sinusoidal networks exist in liver and spleen (B), significant redistribution capacity exists (D), and specialized structures for filtration are present (E)."
+        },
+        {
+            question: "A 65-year-old patient with diabetes mellitus develops microvascular complications. Which mechanism is most likely impaired in the pathophysiology of diabetic microvascular disease?",
+            options: [
+                { text: "Sympathetic neural control of arterioles", correct: false },
+                { text: "Myogenic autoregulation responses", correct: false },
+                { text: "Endothelial nitric oxide production", correct: true },
+                { text: "Hormonal vasoconstrictor sensitivity", correct: false },
+                { text: "Mechanical properties of large arteries", correct: false }
+            ],
+            explanation: "Diabetic microvascular disease is primarily characterized by endothelial dysfunction, particularly impaired nitric oxide production and bioavailability. This leads to reduced vasodilation, increased vascular permeability, and microvascular complications. While other mechanisms may be affected, endothelial NO dysfunction is the primary pathophysiological mechanism. Options A, B, D focus on other control systems that are less primarily affected. Option E refers to macrovascular rather than microvascular changes."
+        },
+        {
+            question: "During exercise, blood flow to skeletal muscle can increase 20-fold. This increase is primarily mediated by:",
+            options: [
+                { text: "Sympathetic vasoconstriction in non-exercising tissues only", correct: false },
+                { text: "Parasympathetic vasodilation in exercising muscle", correct: false },
+                { text: "Local metabolic factors overriding sympathetic vasoconstriction", correct: true },
+                { text: "Decreased systemic vascular resistance alone", correct: false },
+                { text: "Increased cardiac output without local vascular changes", correct: false }
+            ],
+            explanation: "During exercise, local metabolic factors (decreased PO₂, increased PCO₂, decreased pH, increased K⁺, lactate, and adenosine) produce powerful local vasodilation that overrides sympathetic vasoconstriction in exercising muscle. This functional sympatholysis allows massive increases in muscle blood flow. Sympathetic vasoconstriction alone (A) cannot account for the magnitude of increase. There is no significant parasympathetic vasodilation (B). Options D and E don't explain the selective increase in muscle flow."
+        },
+        {
+            question: "A patient with septic shock demonstrates impaired microcirculatory function despite adequate macrovascular pressures and flows. This phenomenon is best explained by:",
+            options: [
+                { text: "Global reduction in cardiac output affecting all tissues equally", correct: false },
+                { text: "Systemic vasoconstriction reducing tissue perfusion uniformly", correct: false },
+                { text: "Maldistribution of blood flow at the microcirculatory level", correct: true },
+                { text: "Primary cardiac dysfunction with secondary vascular effects", correct: false },
+                { text: "Reduced blood viscosity improving macrovascular flow", correct: false }
+            ],
+            explanation: "Septic shock is characterized by microcirculatory dysfunction with maldistribution of blood flow, where some capillary beds are overperfused while others are underperfused, despite maintained macrovascular parameters. This represents a disconnect between macro- and microcirculation. Options A and B suggest uniform effects that don't explain the selective microcirculatory dysfunction. Option D focuses on cardiac rather than microvascular issues. Option E would generally improve rather than impair perfusion."
+        },
+        {
+            question: "In a patient with severe heart failure, the body compensates by activating multiple systems. Which combination of effects would be expected on regional blood flow?",
+            options: [
+                { text: "Increased coronary flow, decreased renal flow, increased cerebral flow", correct: false },
+                { text: "Decreased coronary flow, increased renal flow, decreased cerebral flow", correct: false },
+                { text: "Maintained coronary flow, decreased renal flow, maintained cerebral flow", correct: true },
+                { text: "Increased coronary flow, increased renal flow, decreased cerebral flow", correct: false },
+                { text: "Decreased coronary flow, decreased renal flow, increased cerebral flow", correct: false }
+            ],
+            explanation: "In heart failure, compensatory mechanisms prioritize flow to vital organs. Coronary flow is maintained or may increase due to metabolic demands of the failing heart. Cerebral flow is also maintained due to strong autoregulation. Renal flow is typically reduced due to sympathetic activation and vasoconstriction as part of the compensatory response. This represents the body's hierarchy of organ perfusion during stress."
+        },
+        {
+            question: "A research study examines capillary permeability using the Starling equation. If capillary hydrostatic pressure increases by 10 mmHg while all other Starling forces remain constant, the most likely result would be:",
+            options: [
+                { text: "Increased fluid reabsorption at both arterial and venous ends", correct: false },
+                { text: "Decreased fluid filtration at the arterial end only", correct: false },
+                { text: "Increased net fluid filtration along the entire capillary length", correct: true },
+                { text: "No change in fluid movement due to autoregulation", correct: false },
+                { text: "Selective increase in protein filtration without fluid changes", correct: false }
+            ],
+            explanation: "According to the Starling equation, increased capillary hydrostatic pressure (with other forces constant) would increase the driving force for filtration along the entire capillary length, leading to increased net fluid filtration and potential tissue edema. Option A is opposite to the expected effect. Option B suggests decreased rather than increased filtration. Option D incorrectly applies autoregulation to Starling forces. Option E suggests selective protein effects that wouldn't occur with hydrostatic pressure changes alone."
+        },
+        {
+            question: "A patient with chronic kidney disease develops secondary hypertension. The elevated blood pressure would be expected to affect different regional circulations in which manner?",
+            options: [
+                { text: "All regional circulations would show proportional increases in flow", correct: false },
+                { text: "Cerebral circulation would show marked flow increases due to pressure", correct: false },
+                { text: "Coronary circulation would demonstrate impaired autoregulation first", correct: false },
+                { text: "Cerebral and coronary circulations would maintain relatively stable flows", correct: true },
+                { text: "Splanchnic circulation would show the greatest flow increases", correct: false }
+            ],
+            explanation: "Both cerebral and coronary circulations have robust autoregulation that maintains relatively constant blood flow despite pressure changes, protecting these vital organs from pressure fluctuations. This is essential for preventing hyperperfusion injury. Option A ignores autoregulation. Option B contradicts cerebral autoregulation. Option C incorrectly suggests coronary autoregulation fails first. Option E doesn't account for splanchnic autoregulation."
+        },
+        {
+            question: "A clinical researcher is studying the effects of a new vasodilator drug that specifically blocks L-type calcium channels in vascular smooth muscle. This drug would be expected to have the greatest effect on:",
+            options: [
+                { text: "Endothelium-dependent vasodilation responses", correct: false },
+                { text: "Myogenic autoregulation responses", correct: true },
+                { text: "Metabolic vasodilation during exercise", correct: false },
+                { text: "Neural sympathetic vasoconstriction", correct: false },
+                { text: "Hormonal angiotensin II-mediated vasoconstriction", correct: false }
+            ],
+            explanation: "L-type calcium channels are essential for myogenic autoregulation, where stretch-induced depolarization opens these channels, leading to calcium influx and vasoconstriction. Blocking these channels would impair this intrinsic autoregulatory mechanism most significantly. Endothelium-dependent responses (A) primarily involve NO/cGMP pathways. Metabolic vasodilation (C) involves multiple mediators beyond calcium channels. Neural (D) and hormonal (E) responses have multiple pathways and would be less specifically affected."
+        },
+        {
+            question: "A patient presents with chest pain and ST-segment elevation in leads II, III, and aVF, suggesting inferior myocardial infarction. Given the unique characteristics of coronary circulation, which hemodynamic parameter would be most critical to maintain for optimal coronary perfusion in this patient?",
+            options: [
+                { text: "High systolic blood pressure to overcome coronary resistance", correct: false },
+                { text: "Adequate diastolic blood pressure for coronary filling", correct: true },
+                { text: "Increased heart rate to improve coronary flow velocity", correct: false },
+                { text: "Elevated central venous pressure to enhance preload", correct: false },
+                { text: "Reduced afterload to decrease myocardial oxygen demand", correct: false }
+            ],
+            explanation: "Since coronary blood flow occurs predominantly during diastole when myocardial compression is minimal, maintaining adequate diastolic blood pressure is critical for coronary perfusion, especially in the setting of acute coronary syndrome. High systolic pressure (A) doesn't directly improve coronary flow and may increase afterload. Increased heart rate (C) actually reduces diastolic filling time, potentially worsening coronary perfusion. Elevated CVP (D) may impair coronary perfusion. While reduced afterload (E) helps oxygen demand, maintaining diastolic pressure for perfusion is more immediately critical."
+        },
+        {
+            question: "A patient with severe sepsis develops multiorgan dysfunction despite normal blood pressure and cardiac output maintained with vasopressors. Laboratory studies show elevated lactate levels. This clinical scenario most likely represents failure of which physiological mechanism?",
+            options: [
+                { text: "Macrovascular blood pressure regulation by baroreceptors", correct: false },
+                { text: "Cardiac output maintenance through Frank-Starling mechanism", correct: false },
+                { text: "Microcirculatory oxygen delivery and utilization at tissue level", correct: true },
+                { text: "Renal blood flow autoregulation mechanisms", correct: false },
+                { text: "Pulmonary vascular resistance regulation", correct: false }
+            ],
+            explanation: "This scenario describes the classic disconnect between macrovascular parameters and tissue perfusion seen in sepsis. Despite normal BP and CO, elevated lactate indicates tissue hypoxia due to microcirculatory dysfunction - maldistribution of flow, shunting, and cellular inability to utilize oxygen. The macrovascular parameters (A, B) are maintained by vasopressors. Renal autoregulation (D) and pulmonary resistance (E) are specific organ issues that wouldn't explain the systemic lactate elevation and multiorgan dysfunction."
+        },
+        {
+            question: "A researcher is developing a therapeutic intervention for patients with microvascular disease. Based on the integrated control mechanisms of regional blood flow, which approach would theoretically provide the most comprehensive improvement in tissue perfusion?",
+            options: [
+                { text: "Selective α-adrenergic receptor blockade to reduce sympathetic vasoconstriction", correct: false },
+                { text: "ACE inhibition to reduce angiotensin II-mediated vasoconstriction", correct: false },
+                { text: "Enhancement of endothelial nitric oxide production and bioavailability", correct: true },
+                { text: "Calcium channel blockade to reduce vascular smooth muscle contraction", correct: false },
+                { text: "Adenosine receptor agonism to promote metabolic vasodilation", correct: false }
+            ],
+            explanation: "Enhancing endothelial NO production and bioavailability addresses the most fundamental level of microvascular control, as NO is the primary endothelium-derived vasodilator that affects vascular tone, platelet aggregation, and vascular permeability. This approach would improve multiple aspects of microvascular function. While other options target specific pathways (sympathetic [A], hormonal [B], myogenic [D], or metabolic [E]), endothelial NO function is central to overall microvascular health and integrates with multiple control systems, making it the most comprehensive therapeutic target."
+        }
+    ];
+
+    /**
+     * Shuffles an array in place using the Fisher-Yates algorithm.
+     * @param {Array} array The array to shuffle.
+     */
+    function shuffleArray(array) {
+        for (let i = array.length - 1; i > 0; i--) {
+            const j = Math.floor(Math.random() * (i + 1));
+            [array[i], array[j]] = [array[j], array[i]];
+        }
+    }
+
+    /**
+     * Renders the quiz questions to the page.
+     */
+    function renderQuiz() {
+        const quizContainer = document.getElementById('quiz-container');
+        quizContainer.innerHTML = ''; // Clear previous content
+
+        quizData.forEach((item, index) => {
+            // Create the main card for the question
+            const questionCard = document.createElement('div');
+            questionCard.className = 'bg-white rounded-lg shadow-md p-6 mb-6';
+
+            // Shuffle a copy of the options array
+            const shuffledOptions = [...item.options];
+            shuffleArray(shuffledOptions);
+
+            // Create question text
+            const questionText = `<p class="text-lg font-semibold mb-4">${index + 1}. ${item.question}</p>`;
+
+            // Create options list
+            const optionsContainer = document.createElement('div');
+            optionsContainer.className = 'space-y-3';
+            optionsContainer.id = `options-container-${index}`;
+
+            shuffledOptions.forEach(option => {
+                const optionEl = document.createElement('div');
+                optionEl.className = 'border border-gray-300 rounded-md p-3 transition-colors';
+                optionEl.textContent = option.text;
+                // Store whether this option is correct in a data attribute
+                optionEl.dataset.correct = option.correct;
+                optionsContainer.appendChild(optionEl);
+            });
+
+            // Create "Show Explanation" button
+            const showExplanationBtn = document.createElement('button');
+            showExplanationBtn.textContent = 'Show Explanation';
+            showExplanationBtn.className = 'mt-4 px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50 transition-colors';
+            
+            // Create explanation panel (initially hidden)
+            const explanationPanel = document.createElement('div');
+            explanationPanel.className = 'explanation bg-gray-50 p-4 mt-4 rounded-md hidden';
+            explanationPanel.innerHTML = `<p class="font-semibold text-gray-800">Explanation:</p><p class="text-gray-700">${item.explanation}</p>`;
+            explanationPanel.id = `explanation-${index}`;
+
+            // Add event listener to the button
+            showExplanationBtn.addEventListener('click', () => {
+                // Show the explanation
+                explanationPanel.classList.remove('hidden');
+
+                // Highlight the correct answer
+                const options = optionsContainer.querySelectorAll('div');
+                options.forEach(opt => {
+                    if (opt.dataset.correct === 'true') {
+                        opt.classList.add('correct-answer');
+                    }
+                });
+
+                // Disable the button after click
+                showExplanationBtn.disabled = true;
+                showExplanationBtn.classList.add('opacity-50', 'cursor-not-allowed');
+            });
+
+            // Assemble the card
+            questionCard.innerHTML = questionText;
+            questionCard.appendChild(optionsContainer);
+            questionCard.appendChild(showExplanationBtn);
+            questionCard.appendChild(explanationPanel);
+            
+            // Add the completed card to the main container
+            quizContainer.appendChild(questionCard);
+        });
+    }
+
+    // --- Main Execution ---
+    // Render the quiz once the DOM is fully loaded
+    document.addEventListener('DOMContentLoaded', renderQuiz);
+    </script>
+</body>
+</html>
