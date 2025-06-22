@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Blood Pressure Regulation Quiz</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+        .explanation {
+            display: none;
+            transition: all 0.3s ease-in-out;
+        }
+    </style>
+</head>
+<body class="bg-gray-100 text-gray-800">
+
+    <div class="container mx-auto p-4 sm:p-6 lg:p-8">
+        <header class="text-center mb-8">
+            <h1 class="text-3xl sm:text-4xl font-bold text-gray-900">Blood Pressure Regulation Quiz</h1>
+            <p class="text-md text-gray-600 mt-2">USMLE-Style Multiple Choice Questions</p>
+        </header>
+
+        <main id="quiz-container" class="space-y-6">
+            <!-- Questions will be dynamically inserted here by JavaScript -->
+        </main>
+
+        <footer class="mt-12 text-center text-xs text-gray-500">
+            <p><strong>Disclaimer:</strong> This file was created by Ktp, with assistance from AI tools (e.g., ChatGPT, Gemini, Claude, and Perplexity) for content generation and editing. Please double-check all information for accuracy and reliability.</p>
+        </footer>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const quizData = [
+                {
+                    question: "What is the normal systolic blood pressure according to the American Heart Association/American College of Cardiology classification?",
+                    options: ["110 mmHg", "120 mmHg", "130 mmHg", "100 mmHg", "140 mmHg"],
+                    correctAnswer: "120 mmHg",
+                    explanation: "Normal systolic blood pressure is defined as 120 mmHg according to the AHA/ACC guidelines. 110 mmHg would be considered optimal but below the standard normal reference. 130 mmHg falls into the stage 1 hypertension range. 100 mmHg is below normal range. 140 mmHg is clearly in the hypertensive range."
+                },
+                {
+                    question: "Which formula correctly represents Mean Arterial Pressure (MAP)?",
+                    options: ["MAP = systolic BP + diastolic BP", "MAP = (systolic BP + diastolic BP)/2", "MAP = diastolic BP + (pulse pressure/3)", "MAP = systolic BP - diastolic BP", "MAP = (systolic BP × diastolic BP)/2"],
+                    correctAnswer: "MAP = diastolic BP + (pulse pressure/3)",
+                    explanation: "MAP is calculated as diastolic BP + (pulse pressure/3), where pulse pressure = systolic BP - diastolic BP. This accounts for the fact that diastole lasts longer than systole in the cardiac cycle. Simple addition or averaging doesn't account for the cardiac cycle timing. Subtraction gives pulse pressure, not MAP. Multiplication is not used in MAP calculation."
+                },
+                {
+                    question: "At what blood pressure threshold do baroreceptors begin to respond?",
+                    options: ["40 mmHg", "80 mmHg", "60 mmHg", "100 mmHg", "120 mmHg"],
+                    correctAnswer: "60 mmHg",
+                    explanation: "Baroreceptors have no stimulation below 60 mmHg and begin responding progressively above this threshold. 40 mmHg is too low for baroreceptor activation. 80 mmHg, 100 mmHg, and 120 mmHg are all above the threshold where baroreceptors are already actively responding."
+                },
+                {
+                    question: "Which hormone is released by atrial stretch volume receptors in response to increased atrial pressure?",
+                    options: ["Aldosterone", "Antidiuretic hormone (ADH)", "Angiotensin II", "Atrial Natriuretic Peptide (ANP)", "Renin"],
+                    correctAnswer: "Atrial Natriuretic Peptide (ANP)",
+                    explanation: "ANP is specifically released by atrial stretch receptors when atrial pressure increases due to volume expansion. It promotes sodium and fluid excretion to normalize blood volume. Aldosterone promotes sodium retention. ADH promotes water retention. Angiotensin II causes vasoconstriction. Renin initiates the RAAS cascade but is not released by atrial receptors."
+                },
+                {
+                    question: "According to Poiseuille's equation, vessel radius affects resistance by which power relationship?",
+                    options: ["Second power (r²)", "Third power (r³)", "Fourth power (r⁴)", "First power (r¹)", "Fifth power (r⁵)"],
+                    correctAnswer: "Fourth power (r⁴)",
+                    explanation: "Poiseuille's equation shows that resistance is inversely proportional to the fourth power of vessel radius (r⁴). This means small changes in vessel diameter produce dramatic effects on resistance and blood pressure. The other power relationships do not accurately reflect this critical physiological principle."
+                },
+                {
+                    question: "What is the definition of orthostatic hypotension?",
+                    options: ["Diastolic BP fall >10 mmHg upon standing", "Systolic BP fall >20 mmHg upon standing", "Systolic BP rise >20 mmHg upon standing", "Mean arterial pressure fall >15 mmHg upon standing", "Pulse pressure decrease >10 mmHg upon standing"],
+                    correctAnswer: "Systolic BP fall >20 mmHg upon standing",
+                    explanation: "Orthostatic hypotension is defined as a systolic BP fall >20 mmHg upon standing, often causing syncope with postural changes. A 10 mmHg diastolic fall is not the standard definition. BP rise upon standing would be abnormal but not orthostatic hypotension. MAP and pulse pressure changes are not the standard diagnostic criteria."
+                },
+                {
+                    question: "The CNS ischemic response is activated when Mean Arterial Pressure falls below which threshold?",
+                    options: ["60 mmHg", "40 mmHg", "20 mmHg", "80 mmHg", "100 mmHg"],
+                    correctAnswer: "20 mmHg",
+                    explanation: "The CNS ischemic response activates when MAP falls below 20 mmHg, representing the most potent sympathetic vasoconstrictor system. 60 mmHg is the baroreceptor threshold. 40 mmHg is above the CNS ischemic threshold. 80 mmHg and 100 mmHg are normal MAP ranges that wouldn't trigger this emergency response."
+                },
+                {
+                    question: "Which mechanism is primarily responsible for immediate blood pressure regulation (seconds to minutes)?",
+                    options: ["Renin-angiotensin-aldosterone system", "Pressure diuresis and natriuresis", "Baroreceptor reflex", "Capillary shift mechanism", "Vascular stretch relaxation"],
+                    correctAnswer: "Baroreceptor reflex",
+                    explanation: "The baroreceptor reflex provides immediate BP regulation through rapid nervous system responses within seconds. RAAS operates over hours to days. Pressure diuresis/natriuresis works long-term. Capillary shift mechanism works over minutes to hours. Vascular stretch relaxation is intermediate-term."
+                },
+                {
+                    question: "In the Bainbridge reflex, increased venous return leads to which primary response?",
+                    options: ["Decreased heart rate through enhanced parasympathetic activity", "Increased heart rate through parasympathetic inhibition", "Decreased cardiac output through reduced contractility", "Increased peripheral resistance through vasoconstriction", "Decreased blood pressure through vasodilation"],
+                    correctAnswer: "Increased heart rate through parasympathetic inhibition",
+                    explanation: "The Bainbridge reflex responds to increased venous return by inhibiting parasympathetic activity, leading to increased heart rate. This is opposite to the baroreceptor reflex. The reflex doesn't primarily affect contractility, peripheral resistance, or cause vasodilation in this context."
+                },
+                {
+                    question: "A patient with obstructive sleep apnea would most likely have enhanced sensitivity of which blood pressure regulatory mechanism?",
+                    options: ["Baroreceptor reflex", "Chemoreceptor mechanism", "CNS ischemic response", "Atrial volume regulation", "Pressure diuresis mechanism"],
+                    correctAnswer: "Chemoreceptor mechanism",
+                    explanation: "Sleep apnea causes repeated hypoxic episodes, leading to enhanced chemoreceptor sensitivity to oxygen changes. This results in increased sympathetic activation and hypertension. Baroreceptors respond to pressure, not oxygen. CNS ischemic response requires severe hypotension. Atrial volume regulation responds to volume changes. Pressure diuresis responds to BP elevation."
+                },
+                {
+                    question: "During hemorrhage, which mechanism provides the most immediate compensation for blood volume loss?",
+                    options: ["Activation of the renin-angiotensin system", "Increased ADH secretion", "Capillary shift of interstitial fluid", "Enhanced aldosterone production", "Pressure natriuresis inhibition"],
+                    correctAnswer: "Capillary shift of interstitial fluid",
+                    explanation: "The capillary shift mechanism immediately moves interstitial fluid into capillaries when hydrostatic pressure drops during hemorrhage, providing rapid volume compensation. RAAS activation takes time to produce effects. ADH secretion helps but acts more slowly. Aldosterone works over hours to days. Pressure natriuresis inhibition is a long-term mechanism."
+                },
+                {
+                    question: "Why does the CNS ischemic response paradoxically suppress heart rate despite massive sympathetic activation?",
+                    options: ["Baroreceptor reflex overrides sympathetic stimulation", "Direct inhibition of the SA node by ischemic neurons", "Concurrent activation of the medullary respiratory center", "Chemoreceptor-mediated parasympathetic stimulation", "Reduced cardiac contractility from ischemia"],
+                    correctAnswer: "Concurrent activation of the medullary respiratory center",
+                    explanation: "The CNS ischemic response activates the medullary respiratory center alongside the vasomotor center, creating a paradoxical bradycardia despite intense sympathetic vasoconstriction. This is not due to baroreceptor override, direct SA node inhibition, chemoreceptor parasympathetic effects, or reduced contractility."
+                },
+                 {
+                    question: "In pressure diuresis and natriuresis, increased renal arterial pressure leads to decreased sodium reabsorption through which mechanism?",
+                    options: ["Increased aldosterone synthesis", "Enhanced angiotensin II activity", "Redistributed apical Na⁺ transporters", "Decreased glomerular filtration rate", "Reduced medullary blood flow"],
+                    correctAnswer: "Redistributed apical Na⁺ transporters",
+                    explanation: "Pressure diuresis involves redistribution of apical Na⁺ transporters, reducing sodium reabsorption capacity when renal arterial pressure increases. This mechanism decreases aldosterone levels and angiotensin II activity. GFR actually increases with pressure diuresis. Medullary blood flow increases, not decreases."
+                },
+                {
+                    question: "A 70-year-old patient experiences dizziness when standing up quickly. Laboratory tests show normal kidney function and hormone levels. Which mechanism is most likely impaired?",
+                    options: ["Renin-angiotensin-aldosterone system", "Antidiuretic hormone release", "Baroreceptor sensitivity", "Chemoreceptor function", "Pressure natriuresis mechanism"],
+                    correctAnswer: "Baroreceptor sensitivity",
+                    explanation: "Age-related decreased baroreceptor sensitivity commonly causes orthostatic hypotension with normal kidney function and hormone levels. The symptoms (dizziness on standing) specifically indicate impaired rapid postural BP adjustment. RAAS, ADH, chemoreceptors, and pressure natriuresis wouldn't specifically cause postural symptoms with normal lab values."
+                },
+                {
+                    question: "During a hypertensive crisis with MAP of 150 mmHg, which compensatory mechanism would be most active in attempting to normalize blood pressure?",
+                    options: ["CNS ischemic response activation", "Baroreceptor-mediated sympathetic inhibition", "Enhanced pressure diuresis and natriuresis", "Chemoreceptor-mediated vasoconstriction", "Bainbridge reflex activation"],
+                    correctAnswer: "Enhanced pressure diuresis and natriuresis",
+                    explanation: "At MAP 150 mmHg, enhanced pressure diuresis and natriuresis would be most active, increasing sodium and water excretion to reduce blood volume and BP. CNS ischemic response activates with low BP. Baroreceptors would help but aren't the primary long-term mechanism. Chemoreceptors respond to hypoxia, not hypertension. Bainbridge reflex responds to venous return, not arterial pressure."
+                },
+                {
+                    question: "A patient receives a rapid IV fluid bolus. Which two reflexes would be simultaneously activated but produce opposing effects on heart rate?",
+                    options: ["Baroreceptor reflex and chemoreceptor reflex", "Bainbridge reflex and baroreceptor reflex", "CNS ischemic response and atrial volume regulation", "Chemoreceptor reflex and CNS ischemic response", "Pressure diuresis and baroreceptor reflex"],
+                    correctAnswer: "Bainbridge reflex and baroreceptor reflex",
+                    explanation: "IV fluid bolus increases blood volume, activating both the Bainbridge reflex (increased venous return → increased HR) and baroreceptor reflex (increased BP → decreased HR). These reflexes are antagonistic regarding heart rate effects. The other combinations don't represent opposing effects on heart rate or wouldn't be simultaneously activated by volume expansion."
+                },
+                {
+                    question: "A research study shows that blocking nitric oxide production in the kidney impairs blood pressure regulation. This finding most directly supports the importance of which regulatory mechanism?",
+                    options: ["Baroreceptor reflex sensitivity", "Chemoreceptor response efficiency", "Pressure diuresis and natriuresis function", "CNS ischemic response activation", "Atrial natriuretic peptide release"],
+                    correctAnswer: "Pressure diuresis and natriuresis function",
+                    explanation: "Nitric oxide production increases during pressure diuresis as part of the renal adaptations to elevated BP. Blocking NO would impair this mechanism's ability to increase sodium excretion and regulate long-term BP. The other mechanisms don't primarily depend on renal NO production for their function."
+                },
+                {
+                    question: "A patient with heart failure shows altered central chemoreflex responses. Which pathophysiological consequence would be most expected?",
+                    options: ["Improved exercise tolerance", "Enhanced orthostatic tolerance", "Increased sympathetic nervous system activity", "Decreased peripheral resistance", "Improved baroreceptor sensitivity"],
+                    correctAnswer: "Increased sympathetic nervous system activity",
+                    explanation: "Heart failure patients with altered central chemoreflex responses typically show increased sympathetic nervous system activity due to abnormal CO₂/pH sensing, contributing to disease progression. This wouldn't improve exercise tolerance, enhance orthostatic tolerance, decrease peripheral resistance, or improve baroreceptor function."
+                },
+                {
+                    question: "In analyzing blood pressure regulation, why is the fourth-power relationship between vessel radius and resistance clinically significant for understanding hypertension treatment?",
+                    options: ["It explains why cardiac output changes are more important than vascular changes", "It demonstrates why small decreases in vessel diameter produce dramatic resistance increases", "It shows why blood volume changes are irrelevant to pressure regulation", "It proves that hormonal mechanisms are more powerful than neural mechanisms", "It indicates why baroreceptors are the primary long-term regulatory mechanism"],
+                    correctAnswer: "It demonstrates why small decreases in vessel diameter produce dramatic resistance increases",
+                    explanation: "The r⁴ relationship means small changes in vessel diameter produce exponentially large changes in resistance, making vasodilation/vasoconstriction extremely powerful therapeutic targets. This doesn't minimize cardiac output importance, make volume irrelevant, prove hormonal superiority over neural mechanisms, or establish baroreceptors as primary long-term regulators."
+                },
+                {
+                    question: "A clinical researcher observes that patients with dysregulated pressure natriuresis mechanism consistently develop sustained hypertension, while those with intact neural reflexes but impaired pressure natriuresis still become hypertensive over time. This observation best supports which physiological principle?",
+                    options: ["Neural mechanisms are sufficient for long-term blood pressure control", "Baroreceptor reflexes can compensate for all other regulatory defects", "Renal volume regulation is the definitive mechanism for long-term blood pressure control", "Hormonal systems are more important than neural systems in blood pressure regulation", "Short-term mechanisms can effectively substitute for long-term regulatory systems"],
+                    correctAnswer: "Renal volume regulation is the definitive mechanism for long-term blood pressure control",
+                    explanation: "This observation demonstrates that renal volume regulation through pressure natriuresis is the definitive long-term BP control mechanism. Even with intact neural reflexes, impaired renal mechanisms lead to sustained hypertension, showing that neural mechanisms cannot provide long-term BP control without functional renal regulation. The other options misinterpret the hierarchical nature of BP regulation systems."
+                }
+            ];
+
+            const quizContainer = document.getElementById('quiz-container');
+
+            /**
+             * Shuffles array in place.
+             * @param {Array} a items An array containing the items.
+             */
+            function shuffle(a) {
+                for (let i = a.length - 1; i > 0; i--) {
+                    const j = Math.floor(Math.random() * (i + 1));
+                    [a[i], a[j]] = [a[j], a[i]];
+                }
+                return a;
+            }
+
+            // Generate and append quiz questions to the container
+            quizData.forEach((q, index) => {
+                // Create a container for the question
+                const questionCard = document.createElement('div');
+                questionCard.className = 'bg-white p-6 rounded-lg shadow-sm border border-gray-200';
+                
+                // Add the question number and text
+                const questionText = document.createElement('h2');
+                questionText.className = 'text-lg font-semibold mb-4 text-gray-900';
+                questionText.innerHTML = `<span class="font-bold">Question ${index + 1}:</span> ${q.question}`;
+                questionCard.appendChild(questionText);
+
+                // Create a list for the options
+                const optionsList = document.createElement('ul');
+                optionsList.className = 'space-y-3';
+                optionsList.setAttribute('data-question-index', index);
+
+                // Shuffle options before creating list items
+                const shuffledOptions = shuffle([...q.options]);
+                shuffledOptions.forEach(option => {
+                    const optionItem = document.createElement('li');
+                    optionItem.className = 'p-3 rounded-md border border-gray-300 bg-gray-50 transition-colors duration-200';
+                    optionItem.textContent = option;
+                    optionsList.appendChild(optionItem);
+                });
+                questionCard.appendChild(optionsList);
+
+                // Add the "Show Explanation" button
+                const showExplanationBtn = document.createElement('button');
+                showExplanationBtn.className = 'mt-4 px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-all';
+                showExplanationBtn.textContent = 'Show Explanation';
+                questionCard.appendChild(showExplanationBtn);
+
+                // Add the explanation container (initially hidden)
+                const explanationDiv = document.createElement('div');
+                explanationDiv.className = 'explanation mt-4 p-4 bg-gray-100 rounded-md border-l-4 border-blue-500';
+                explanationDiv.innerHTML = `<p class="font-semibold">Explanation:</p><p>${q.explanation}</p>`;
+                questionCard.appendChild(explanationDiv);
+
+                // Append the entire question card to the quiz container
+                quizContainer.appendChild(questionCard);
+
+                // Event listener for the button
+                showExplanationBtn.addEventListener('click', () => {
+                    // Toggle explanation visibility
+                    const isHidden = explanationDiv.style.display === 'none' || explanationDiv.style.display === '';
+                    explanationDiv.style.display = isHidden ? 'block' : 'none';
+                    showExplanationBtn.textContent = isHidden ? 'Hide Explanation' : 'Show Explanation';
+
+                    // Highlight the correct answer
+                    if (isHidden) {
+                        const options = optionsList.getElementsByTagName('li');
+                        for (let option of options) {
+                             // Reset any previous styling
+                            option.classList.remove('bg-green-200', 'border-green-500', 'font-bold', 'text-green-900');
+                            option.classList.add('bg-gray-50', 'border-gray-300');
+
+                            if (option.textContent.trim() === q.correctAnswer.trim()) {
+                                option.classList.add('bg-green-200', 'border-green-500', 'font-bold', 'text-green-900');
+                                option.classList.remove('bg-gray-50', 'border-gray-300');
+                            }
+                        }
+                    } else {
+                        // If hiding, remove highlight
+                         const options = optionsList.getElementsByTagName('li');
+                         for (let option of options) {
+                            option.classList.remove('bg-green-200', 'border-green-500', 'font-bold', 'text-green-900');
+                            option.classList.add('bg-gray-50', 'border-gray-300');
+                        }
+                    }
+                });
+            });
+        });
+    </script>
+
+</body>
+</html>
