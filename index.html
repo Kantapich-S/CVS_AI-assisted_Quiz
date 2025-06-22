@@ -2,48 +2,91 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>My Study Resources</title>
   <style>
     body {
       font-family: Arial, sans-serif;
       background-color: #f4f6f8;
-      margin: 40px;
+      margin: 0;
+      padding: 0;
       color: #333;
     }
+
+    header {
+      position: sticky;
+      top: 0;
+      background-color: #2c3e50;
+      color: white;
+      padding: 20px;
+      text-align: center;
+      z-index: 1000;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    }
+
     h1 {
-      color: #2c3e50;
+      margin: 0;
+      font-size: 24px;
     }
-    ul {
-      list-style: none;
-      padding: 0;
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 20px;
+      padding: 40px 20px;
+      max-width: 1000px;
+      margin: auto;
     }
-    li {
-      margin: 10px 0;
+
+    .card {
+      background-color: #e0ecff;
+      border-radius: 10px;
+      padding: 20px;
+      text-align: center;
+      transition: transform 0.2s, box-shadow 0.2s;
     }
-    a {
+
+    .card:hover {
+      transform: scale(1.03);
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+      background-color: #c5dfff;
+    }
+
+    .card a {
       text-decoration: none;
       font-size: 18px;
-      background-color: #e0ecff;
-      padding: 10px 15px;
-      border-radius: 8px;
-      display: inline-block;
       color: #1a237e;
-      transition: background-color 0.2s;
+      display: block;
     }
-    a:hover {
-      background-color: #c5dfff;
+
+    footer {
+      text-align: center;
+      padding: 20px;
+      background-color: #f0f0f0;
+      font-size: 14px;
+      color: #777;
+      margin-top: 40px;
     }
   </style>
 </head>
 <body>
-  <h1>📚 CVS_AI-assisted_Quiz_01</h1>
-  <ul>
-    <li><a href="02Q_Heart_Anatomy.html">🧠02Q_Heart_Anatomy</a></li>
-    <li><a href="03Q_CVS_Histo.html">🧠03Q_CVS_Histo</a></li>
-    <li><a href="04Q_CVS_Dev.html">🧠04Q_CVS_Dev</a></li>
-    <li><a href="05Qp1_CVS_Physio.html">🧠05Qp1_CVS_Physio</a></li>
-    <li><a href="05Qp2_CVS_Physio.html">🧠05Qp2_CVS_Physio</a></li>
-    <li><a href="06Q_CVS Reg Circ.html">🧠06Q_CVS Reg Circ</a></li>
-  </ul>
+
+  <header>
+    <h1>📚 CVS_AI-assisted_Quiz_01</h1>
+  </header>
+
+  <main class="grid">
+    <div class="card"><a href="02Q_Heart_Anatomy.html">🧠 02Q Heart Anatomy</a></div>
+    <div class="card"><a href="03Q_CVS_Histo.html">🧠 03Q CVS Histo</a></div>
+    <div class="card"><a href="04Q_CVS_Dev.html">🧠 04Q CVS Development</a></div>
+    <div class="card"><a href="05Qp1_CVS_Physio.html">🧠 05Qp1 CVS Physio</a></div>
+    <div class="card"><a href="05Qp2_CVS_Physio.html">🧠 05Qp2 CVS Physio</a></div>
+    <div class="card"><a href="06Q_CVS Reg Circ.html">🧠 06Q CVS Reg Circ</a></div>
+  </main>
+
+  <footer>
+    Made by Kantapich S. | Last updated: June 2025 | <a href="https://github.com/yourusername" target="_blank">GitHub</a>
+  </footer>
+
 </body>
 </html>
